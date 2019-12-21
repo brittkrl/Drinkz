@@ -1,4 +1,6 @@
-﻿using System;
+﻿using B4.EE.KarlstromB.ViewModels;
+using FreshMvvm;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +12,7 @@ namespace B4.EE.KarlstromB
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
         }
 
         protected override void OnStart()

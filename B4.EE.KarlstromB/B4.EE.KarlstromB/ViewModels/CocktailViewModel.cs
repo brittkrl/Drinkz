@@ -3,6 +3,8 @@ using B4.EE.KarlstromB.Domain.Services;
 using B4.EE.KarlstromB.Domain.Validators;
 using FluentValidation;
 using FreshMvvm;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -97,6 +99,21 @@ namespace B4.EE.KarlstromB.ViewModels
             set { ingredients = value; RaisePropertyChanged(nameof(Ingredients)); }
         }
 
+
+        private string imageUrl;
+        public string ImageUrl
+        {
+            get { return imageUrl; }
+            set { imageUrl = value; RaisePropertyChanged(nameof(ImageUrl)); }
+        }
+
+        private MediaFile selectedImage;
+        public MediaFile SelectedImage
+        {
+            get { return selectedImage; }
+            set { selectedImage = value; RaisePropertyChanged(nameof(SelectedImage)); }
+        }
+
         #endregion
 
         public async override void Init(object initData)
@@ -143,7 +160,11 @@ namespace B4.EE.KarlstromB.ViewModels
                 SaveCocktail();
                 if (ingredient == null)
                 {
-                    ingredient = new Ingredient();
+                    ingredient = new Ingredient
+                    {
+                        CocktailId = currentCocktail.Id,
+                        Cocktail = currentCocktail
+                    };
                 }
                 await CoreMethods.PushPageModel<IngredientViewModel>(ingredient, false, true);
             });
@@ -153,6 +174,31 @@ namespace B4.EE.KarlstromB.ViewModels
             {
                 currentCocktail.Ingredients.Remove(ingredient);
                 LoadCocktail();
+            });
+
+        public ICommand TakePhoto => new Command(
+            async () =>
+            {
+                if (!CrossMedia.Current.IsPickPhotoSupported)
+                {
+                    await CoreMethods.DisplayAlert("Error", "This is not supported on your device", "Continue");
+                    return;
+                }
+                await CrossMedia.Current.Initialize();
+
+                var mediaOptions = new PickMediaOptions
+                {
+                    PhotoSize = PhotoSize.Medium
+                };
+                selectedImage = await CrossMedia.Current.PickPhotoAsync(mediaOptions);
+
+                if (selectedImage == null)
+                {
+                    await CoreMethods.DisplayAlert("Error", "Unable to retrieve photo", "Continue");
+                    return;
+                }
+
+                ImageUrl = selectedImage.Path;
             });
 
         private async Task RefreshCocktail()
@@ -180,6 +226,7 @@ namespace B4.EE.KarlstromB.ViewModels
             CocktailName = currentCocktail.Name;
             CocktailPreparation = currentCocktail.Preparation;
             Rating = currentCocktail.Rating;
+            ImageUrl = currentCocktail.ImageUrl;
             Ingredients = new ObservableCollection<Ingredient>(currentCocktail.Ingredients.OrderBy(e => e.Name));
         }
 
@@ -189,6 +236,7 @@ namespace B4.EE.KarlstromB.ViewModels
             currentCocktail.Preparation = CocktailPreparation;
             currentCocktail.Rating = Rating;
             currentCocktail.UserId = settings.CurrentUserId;
+            currentCocktail.ImageUrl = ImageUrl;
         }
 
         private bool Validate(Cocktail cocktail)

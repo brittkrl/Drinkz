@@ -9,20 +9,35 @@
              Title="{Binding PageTitle}"
              x:Name="page"             
              x:Class="B4.EE.KarlstromB.Pages.CocktailPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" 
+                     IconImageSource="{OnPlatform UWP=save.png}" 
+                     Command="{Binding SaveCocktailCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView AbsoluteLayout.LayoutFlags="All"
                         AbsoluteLayout.LayoutBounds="0,0,1,1">
             <StackLayout>
-                <StackLayout Orientation="Horizontal">
+                <StackLayout>
                     <Image Source="{Binding ImageUrl}" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" />
+                    <Button HorizontalOptions="Center" Text="Take Photo" Command="{Binding TakePhoto}"  BackgroundColor="{Binding ThemeColour}">
+                        <!--<Button.IsVisible>
+                        <OnPlatform x:TypeArguments="x:Boolean">
+                            <OnPlatform.Platforms>
+                                <On Platform="Android" Value="false" />
+                                <On Platform="UWP" Value="true" />
+                            </OnPlatform.Platforms>
+                        </OnPlatform>
+                    </Button.IsVisible>-->
+                    </Button>
                 </StackLayout>
                 <Label Text="Name" />
                 <Entry Text="{Binding CocktailName}" Placeholder="Enter a name" />
                 <Label Text="{Binding CocktailNameError}"
                            IsVisible="{Binding CocktailNameErrorVisible}" 
                            StyleClass="errormessage" />
-                <Label Text="Description" />
-                <Entry Text="{Binding CocktailPreparation}" Placeholder="Describe your list here" />
+                <Label Text="Preparation" />
+                <Editor Text="{Binding CocktailPreparation}" HeightRequest="100" Placeholder="Describe the preparation here" />
                 <Label Text="{Binding CocktailPreparationError}"
                            IsVisible="{Binding CocktailPreparationErrorVisible}" 
                            StyleClass="errormessage" />
@@ -30,7 +45,7 @@
                     <Label Text="Rating" 
                                VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
                     <Slider Value="{Binding Rating}" Maximum="10" Minimum="0" MinimumTrackColor="#aaaaaa"/>
-                </StackLayout>                
+                </StackLayout>
                 <Button Text="Add new ingredient" 
                             Command="{Binding OpenIngredientPageCommand}" 
                             HorizontalOptions="End" Margin="0,20,0,0" />
@@ -54,8 +69,14 @@
                                                   Text="Delete" IsDestructive="True" />
                                 </ViewCell.ContextActions>
                                 <StackLayout>
-                                    <Label Text="{Binding IngredientName}" 
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Name}" 
                                                VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                                        <Label Text="{Binding Amount, StringFormat='{0} ml'}"/>
+                                        <Label Text="{Binding OptionalAmount}"/>
+
+                                    </StackLayout>
+
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>

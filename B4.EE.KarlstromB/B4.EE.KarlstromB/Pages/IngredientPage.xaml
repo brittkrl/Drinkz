@@ -3,13 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors"
+             xmlns:numeric="clr-namespace:Syncfusion.SfNumericUpDown.XForms;assembly=Syncfusion.SfNumericUpDown.XForms"
              mc:Ignorable="d"
+             Style="{StaticResource MainLayout}"
+             Title="{Binding PageTitle}"
+             x:Name="page"   
              x:Class="B4.EE.KarlstromB.Pages.IngredientPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" 
+                     IconImageSource="{OnPlatform UWP=save.png}" 
+                     Command="{Binding SaveIngredientCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Ingredient Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <AbsoluteLayout>
+            <ScrollView AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <StackLayout>
+                    <Picker Title="Select an ingredient" 
+                            ItemsSource="{Binding BasicIngredients}" 
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedIngredient, Mode=TwoWay}" />
+
+                    <Label Text="Custom ingredient name" />
+                    <Entry Text="{Binding IngredientName}" Placeholder="Enter a new ingredient" />
+
+                    <Label Text="Amount (in ml)" />
+                    <numeric:SfNumericUpDown Value="{Binding Amount}" x:Name="numericUpDown" Minimum="10" Maximum="200" StepValue="5" SpinButtonAlignment="Both" IsEditable="False"/>
+                    
+                    <Label Text="Optional amount" />
+                    <Entry Text="{Binding OptionalAmount}" Placeholder="e.g. 1 slice" />
+                </StackLayout>
+            </ScrollView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

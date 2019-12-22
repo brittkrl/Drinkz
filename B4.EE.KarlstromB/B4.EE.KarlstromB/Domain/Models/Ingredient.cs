@@ -10,5 +10,7 @@ namespace B4.EE.KarlstromB.Domain.Models
         public string Name { get; set; }
         public int? Amount { get; set; }
         public string OptionalAmount { get; set; }
+        public Guid CocktailId { get; set; }
+        public Cocktail Cocktail { get; set; }
     }
 }

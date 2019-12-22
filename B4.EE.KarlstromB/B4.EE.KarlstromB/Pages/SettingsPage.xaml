@@ -4,12 +4,30 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="B4.EE.KarlstromB.Pages.SettingsPage">
+             Style="{StaticResource MainLayout}"
+             x:Class="B4.EE.KarlstromB.Pages.SettingsPage"
+             Title="Settings">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" 
+                     IconImageSource="{OnPlatform UWP=save.png}" 
+                     Command="{Binding SaveSettingsCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Settings Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <TableView>
+            <TableRoot>
+                <TableSection Title="User settings">
+                    <EntryCell Text="{Binding FirstName}" Label="First name" Keyboard="Text" />
+                    <TextCell Text="{Binding ErrorFirstName}" TextColor="#f46842" />
+                    <EntryCell Text="{Binding LastName}" Label="Last name" Keyboard="Text" />
+                    <TextCell Text="{Binding ErrorLastName}" TextColor="#f46842" />
+                    <EntryCell Text="{Binding Email}" Label="E-mail" Keyboard="Email" />
+                    <TextCell Text="{Binding ErrorEmail}" TextColor="#f46842" />
+                </TableSection>
+                <!--<TableSection Title="General settings">
+                    <SwitchCell On="{Binding EnableListSharing}" Text="Enable List sharing" />
+                    <SwitchCell On="{Binding EnableNotifications}" Text="Enable notifications" />
+                </TableSection>-->
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

@@ -3,13 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors" 
+             Style="{StaticResource MainLayout}"             
              mc:Ignorable="d"
-             x:Class="B4.EE.KarlstromB.Pages.OverviewPage">
+             x:Name="page"                          
+             x:Class="B4.EE.KarlstromB.Pages.OverviewPage"
+             Title="Cocktails">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Text="Add" IconImageSource="add.png"
+                     Command="{Binding OpenCocktailPageCommand}"></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Overview Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ListView ItemsSource="{Binding Cocktails}"
+                          HasUnevenRows="False" RowHeight="60" >
+                <ListView.Behaviors>
+                    <bhv:EventToCommandBehavior 
+                        EventName="ItemTapped"  
+                        Command="{Binding OpenCocktailPageCommand}"
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConv}" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Command="{Binding BindingContext.OpenCocktailPageCommand, Source={x:Reference page}}" 
+                                              CommandParameter="{Binding .}" 
+                                              Text="Edit" />
+                                <MenuItem Command="{Binding BindingContext.DeleteCocktailCommand, Source={x:Reference page}}"
+                                              CommandParameter="{Binding .}" 
+                                              Text="Delete" 
+                                              IsDestructive="True" />
+                            </ViewCell.ContextActions>
+                            <StackLayout>
+                                <Image Source="{Binding Path=IsCompleted}"
+                                           VerticalOptions="CenterAndExpand" />
+                                <Label Text="{Binding Name}" 
+                                           VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,11 +1,215 @@
-﻿using FreshMvvm;
+﻿using B4.EE.KarlstromB.Domain.Models;
+using B4.EE.KarlstromB.Domain.Services;
+using B4.EE.KarlstromB.Domain.Validators;
+using FluentValidation;
+using FreshMvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace B4.EE.KarlstromB.ViewModels
 {
     public class CocktailViewModel : FreshBasePageModel
     {
+        private readonly ICocktailsService cocktailsService;
+        private readonly IAppSettingsService settingsService;
+        private IValidator cocktailValidator;
+        private AppSettings settings;
+        private Cocktail currentCocktail;
+        private bool isNew = true;
+
+        public CocktailViewModel(ICocktailsService cocktailsService,
+            IAppSettingsService settingsService)
+        {
+            this.cocktailsService = cocktailsService;
+            this.settingsService = settingsService;
+            cocktailValidator = new CocktailValidator();
+        }
+
+        #region Properties
+
+        private string pageTitle;
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set { pageTitle = value; RaisePropertyChanged(nameof(PageTitle)); }
+        }
+
+        private string cocktailName;
+        public string CocktailName
+        {
+            get { return cocktailName; }
+            set { cocktailName = value; RaisePropertyChanged(nameof(CocktailName)); }
+        }
+
+        private string cocktailNameError;
+        public string CocktailNameError
+        {
+            get { return cocktailNameError; }
+            set
+            {
+                cocktailNameError = value;
+                RaisePropertyChanged(nameof(CocktailNameError));
+                RaisePropertyChanged(nameof(CocktailNameErrorVisible));
+            }
+        }
+
+        public bool CocktailNameErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(CocktailNameError); }
+        }
+
+        private string cocktailPreparation;
+        public string CocktailPreparation
+        {
+            get { return cocktailPreparation; }
+            set { cocktailPreparation = value; RaisePropertyChanged(nameof(CocktailPreparation)); }
+        }
+
+        private string cocktailPreparationError;
+        public string CocktailPreparationError
+        {
+            get { return cocktailPreparationError; }
+            set { cocktailPreparationError = value; RaisePropertyChanged(nameof(CocktailPreparationError)); RaisePropertyChanged(nameof(CocktailPreparationErrorVisible)); }
+        }
+
+        public bool CocktailPreparationErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(CocktailPreparationError); }
+        }
+
+        private int? rating;
+        public int? Rating
+        {
+            get { return rating; }
+            set { rating = value; RaisePropertyChanged(nameof(Rating)); }
+        }
+
+        private ObservableCollection<Ingredient> ingredients;
+        public ObservableCollection<Ingredient> Ingredients
+        {
+            get { return ingredients; }
+            set { ingredients = value; RaisePropertyChanged(nameof(Ingredients)); }
+        }
+
+        #endregion
+
+        public async override void Init(object initData)
+        {
+            base.Init(initData);
+            currentCocktail = initData as Cocktail;
+            settings = await settingsService.GetSettings();
+            await RefreshCocktail();
+        }
+
+        public override void ReverseInit(object returnedData)
+        {
+            base.ReverseInit(returnedData);
+            if (returnedData is Ingredient)
+            {
+                LoadCocktail();
+            }
+        }
+
+        public ICommand SaveCocktailCommand => new Command(
+            async () =>
+            {
+                SaveCocktail();
+                if (Validate(currentCocktail))
+                {
+                    if (isNew)
+                    {
+                        await cocktailsService.AddCocktail(currentCocktail);
+                    }
+                    else
+                    {
+                        await cocktailsService.UpdateCocktail(currentCocktail);
+                    }
+
+                    MessagingCenter.Send(this, "Cocktail saved", currentCocktail);
+
+                    await CoreMethods.PopPageModel(false, true);
+                }
+            });
+
+        public ICommand OpenIngredientPageCommand => new Command<Ingredient>(
+            async (Ingredient ingredient) =>
+            {
+                SaveCocktail();
+                if (ingredient == null)
+                {
+                    ingredient = new Ingredient();
+                }
+                await CoreMethods.PushPageModel<IngredientViewModel>(ingredient, false, true);
+            });
+
+        public ICommand DeleteIngredientCommand => new Command<Ingredient>(
+            (Ingredient ingredient) =>
+            {
+                currentCocktail.Ingredients.Remove(ingredient);
+                LoadCocktail();
+            });
+
+        private async Task RefreshCocktail()
+        {
+            if (currentCocktail != null)
+            {
+                isNew = false;
+                PageTitle = "Edit cocktail";
+                currentCocktail = await cocktailsService.GetCocktail(currentCocktail.Id);
+            }
+            else
+            {
+                isNew = true;
+                PageTitle = "New cocktail";
+                currentCocktail = new Cocktail();
+                currentCocktail.Id = Guid.NewGuid();
+                currentCocktail.UserId = settings.CurrentUserId;
+                currentCocktail.Ingredients = new List<Ingredient>();
+            }
+            LoadCocktail();
+        }
+
+        private void LoadCocktail()
+        {
+            CocktailName = currentCocktail.Name;
+            CocktailPreparation = currentCocktail.Preparation;
+            Rating = currentCocktail.Rating;
+            Ingredients = new ObservableCollection<Ingredient>(currentCocktail.Ingredients.OrderBy(e => e.Name));
+        }
+
+        private void SaveCocktail()
+        {
+            currentCocktail.Name = CocktailName;
+            currentCocktail.Preparation = CocktailPreparation;
+            currentCocktail.Rating = Rating;
+            currentCocktail.UserId = settings.CurrentUserId;
+        }
+
+        private bool Validate(Cocktail cocktail)
+        {
+            CocktailNameError = "";
+            CocktailPreparationError = "";
+
+            var validationResult = cocktailValidator.Validate(cocktail);
+            foreach (var error in validationResult.Errors)
+            {
+                if (error.PropertyName == nameof(cocktail.Name))
+                {
+                    CocktailNameError = error.ErrorMessage;
+                }
+                if (error.PropertyName == nameof(cocktail.Preparation))
+                {
+                    CocktailPreparationError = error.ErrorMessage;
+                }
+            }
+
+            return validationResult.IsValid;
+        }
     }
 }

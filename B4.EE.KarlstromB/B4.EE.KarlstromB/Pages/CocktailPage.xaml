@@ -3,13 +3,65 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors"              
              mc:Ignorable="d"
+             Style="{StaticResource MainLayout}"
+             Title="{Binding PageTitle}"
+             x:Name="page"             
              x:Class="B4.EE.KarlstromB.Pages.CocktailPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Cocktail Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="{Binding ImageUrl}" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" />
+                </StackLayout>
+                <Label Text="Name" />
+                <Entry Text="{Binding CocktailName}" Placeholder="Enter a name" />
+                <Label Text="{Binding CocktailNameError}"
+                           IsVisible="{Binding CocktailNameErrorVisible}" 
+                           StyleClass="errormessage" />
+                <Label Text="Description" />
+                <Entry Text="{Binding CocktailPreparation}" Placeholder="Describe your list here" />
+                <Label Text="{Binding CocktailPreparationError}"
+                           IsVisible="{Binding CocktailPreparationErrorVisible}" 
+                           StyleClass="errormessage" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Rating" 
+                               VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                    <Slider Value="{Binding Rating}" Maximum="10" Minimum="0" MinimumTrackColor="#aaaaaa"/>
+                </StackLayout>                
+                <Button Text="Add new ingredient" 
+                            Command="{Binding OpenIngredientPageCommand}" 
+                            HorizontalOptions="End" Margin="0,20,0,0" />
+                <ListView ItemsSource="{Binding Ingredients}"
+                              HasUnevenRows="False" RowHeight="60">
+                    <ListView.Behaviors>
+                        <bhv:EventToCommandBehavior 
+                                EventName="ItemTapped"  
+                                Command="{Binding OpenIngredientPageCommand}"
+                                EventArgsConverter="{StaticResource ItemTappedEventArgsConv}" />
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Command="{Binding BindingContext.OpenIngredientPageCommand, Source={x:Reference page}}" 
+                                                  CommandParameter="{Binding .}" 
+                                                  Text="Edit" />
+                                    <MenuItem Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference page}}"
+                                                  CommandParameter="{Binding .}"
+                                                  Text="Delete" IsDestructive="True" />
+                                </ViewCell.ContextActions>
+                                <StackLayout>
+                                    <Label Text="{Binding IngredientName}" 
+                                               VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

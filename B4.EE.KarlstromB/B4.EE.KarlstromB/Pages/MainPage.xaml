@@ -7,9 +7,13 @@
              x:Class="B4.EE.KarlstromB.Pages.MainPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Main Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Button Text="My drinks" 
+                            Command="{Binding OpenOverviewPageCommand}" 
+                            HorizontalOptions="Center" Padding="20,20,20,20" Margin="0,20,0,0" BackgroundColor="#017ED8" TextColor="White" FontAttributes="Bold" WidthRequest="150"/>
+            <Button Text="My profile" 
+                            Command="{Binding OpenSettingsPageCommand}" 
+                            HorizontalOptions="Center" Padding="20,20,20,20" Margin="0,20,0,0" BackgroundColor="#017ED8" TextColor="White" FontAttributes="Bold" WidthRequest="150"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

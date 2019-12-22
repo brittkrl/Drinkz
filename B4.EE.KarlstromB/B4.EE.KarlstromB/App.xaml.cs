@@ -1,4 +1,6 @@
-﻿using B4.EE.KarlstromB.ViewModels;
+﻿using B4.EE.KarlstromB.Domain.Services;
+using B4.EE.KarlstromB.Domain.Services.Local;
+using B4.EE.KarlstromB.ViewModels;
 using FreshMvvm;
 using System;
 using Xamarin.Forms;
@@ -11,6 +13,10 @@ namespace B4.EE.KarlstromB
         public App()
         {
             InitializeComponent();
+
+            FreshIOC.Container.Register<IAppSettingsService>(new JsonAppSettingsService());
+            FreshIOC.Container.Register<IUsersService>(new JsonUsersService());
+            FreshIOC.Container.Register<ICocktailsService>(new JsonCocktailsService());
 
             MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
         }

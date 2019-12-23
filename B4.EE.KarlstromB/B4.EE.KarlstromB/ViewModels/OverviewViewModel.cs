@@ -17,6 +17,7 @@ namespace B4.EE.KarlstromB.ViewModels
         private readonly IAppSettingsService settingsService;
         private readonly ICocktailsService cocktailsService;
 
+
         public OverviewViewModel(
             IAppSettingsService settingsService, 
             ICocktailsService cocktailsService)
@@ -24,7 +25,6 @@ namespace B4.EE.KarlstromB.ViewModels
             this.settingsService = settingsService;
             this.cocktailsService = cocktailsService;
         }
-
 
         private ObservableCollection<Cocktail> cocktails;
         public ObservableCollection<Cocktail> Cocktails
@@ -59,5 +59,6 @@ namespace B4.EE.KarlstromB.ViewModels
             Cocktails = null;
             Cocktails = new ObservableCollection<Cocktail>(cocktails.OrderBy(e => e.Name));
         }
+        //public IList<Cocktail> CocktailExamples { get { return BasicCocktails.CocktailsExamples; } }
     }
 }

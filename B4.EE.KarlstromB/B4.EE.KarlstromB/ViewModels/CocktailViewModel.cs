@@ -217,6 +217,7 @@ namespace B4.EE.KarlstromB.ViewModels
                 currentCocktail.Id = Guid.NewGuid();
                 currentCocktail.UserId = settings.CurrentUserId;
                 currentCocktail.Ingredients = new List<Ingredient>();
+                currentCocktail.ImageUrl = "noimage.png";
             }
             LoadCocktail();
         }

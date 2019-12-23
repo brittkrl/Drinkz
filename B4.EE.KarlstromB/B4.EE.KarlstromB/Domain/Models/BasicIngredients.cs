@@ -45,16 +45,6 @@ namespace B4.EE.KarlstromB.Domain.Models
             BasicIngredients.Add(new Ingredient
             {
                 Id = Guid.NewGuid(),
-                Name = "Ice"
-            });
-            BasicIngredients.Add(new Ingredient
-            {
-                Id = Guid.NewGuid(),
-                Name = "Lime"
-            });
-            BasicIngredients.Add(new Ingredient
-            {
-                Id = Guid.NewGuid(),
                 Name = "Pineapple juice"
             });
             BasicIngredients.Add(new Ingredient
@@ -140,17 +130,7 @@ namespace B4.EE.KarlstromB.Domain.Models
             BasicIngredients.Add(new Ingredient
             {
                 Id = Guid.NewGuid(),
-                Name = "Kahlua"
-            });
-            BasicIngredients.Add(new Ingredient
-            {
-                Id = Guid.NewGuid(),
-                Name = "Lemon"
-            });
-            BasicIngredients.Add(new Ingredient
-            {
-                Id = Guid.NewGuid(),
-                Name = "Orange"
+                Name = "Kahlúa"
             });
             BasicIngredients.Add(new Ingredient
             {
@@ -175,11 +155,6 @@ namespace B4.EE.KarlstromB.Domain.Models
             BasicIngredients.Add(new Ingredient
             {
                 Id = Guid.NewGuid(),
-                Name = "Sugar"
-            });
-            BasicIngredients.Add(new Ingredient
-            {
-                Id = Guid.NewGuid(),
                 Name = "Sugar syrup"
             });
             BasicIngredients.Add(new Ingredient
@@ -196,6 +171,21 @@ namespace B4.EE.KarlstromB.Domain.Models
             {
                 Id = Guid.NewGuid(),
                 Name = "Cream"
+            });
+            BasicIngredients.Add(new Ingredient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Licor 43"
+            });
+            BasicIngredients.Add(new Ingredient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Red Bull"
+            });
+            BasicIngredients.Add(new Ingredient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Red Vodka"
             });
         }
     }

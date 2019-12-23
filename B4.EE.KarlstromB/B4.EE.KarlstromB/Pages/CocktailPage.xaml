@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors"              
+             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors"   
+             xmlns:numeric="clr-namespace:Syncfusion.SfNumericUpDown.XForms;assembly=Syncfusion.SfNumericUpDown.XForms"
              mc:Ignorable="d"
              Style="{StaticResource MainLayout}"
              Title="{Binding PageTitle}"
@@ -20,16 +21,7 @@
             <StackLayout>
                 <StackLayout>
                     <Image Source="{Binding ImageUrl}" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" />
-                    <Button HorizontalOptions="Center" Text="Take Photo" Command="{Binding TakePhoto}"  BackgroundColor="{Binding ThemeColour}">
-                        <!--<Button.IsVisible>
-                        <OnPlatform x:TypeArguments="x:Boolean">
-                            <OnPlatform.Platforms>
-                                <On Platform="Android" Value="false" />
-                                <On Platform="UWP" Value="true" />
-                            </OnPlatform.Platforms>
-                        </OnPlatform>
-                    </Button.IsVisible>-->
-                    </Button>
+                    <Button HorizontalOptions="Center" Text="Take Photo" Command="{Binding TakePhoto}"  BackgroundColor="{Binding ThemeColour}"/>
                 </StackLayout>
                 <Label Text="Name" />
                 <Entry Text="{Binding CocktailName}" Placeholder="Enter a name" />
@@ -41,11 +33,11 @@
                 <Label Text="{Binding CocktailPreparationError}"
                            IsVisible="{Binding CocktailPreparationErrorVisible}" 
                            StyleClass="errormessage" />
-                <StackLayout Orientation="Horizontal">
+                <StackLayout>
                     <Label Text="Rating" 
                                VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
-                    <Slider Value="{Binding Rating}" Maximum="10" Minimum="0" MinimumTrackColor="#aaaaaa"/>
-                </StackLayout>
+                    <numeric:SfNumericUpDown Value="{Binding Rating}" Minimum="1" Maximum="10" SpinButtonAlignment="Both" IsEditable="False"/>
+                    </StackLayout>
                 <Button Text="Add new ingredient" 
                             Command="{Binding OpenIngredientPageCommand}" 
                             HorizontalOptions="End" Margin="0,20,0,0" />

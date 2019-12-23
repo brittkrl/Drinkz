@@ -6,14 +6,35 @@
              mc:Ignorable="d"
              x:Class="B4.EE.KarlstromB.Pages.MainPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Button Text="My drinks" 
-                            Command="{Binding OpenOverviewPageCommand}" 
-                            HorizontalOptions="Center" Padding="20,20,20,20" Margin="0,20,0,0" BackgroundColor="#017ED8" TextColor="White" FontAttributes="Bold" WidthRequest="150"/>
-            <Button Text="My profile" 
-                            Command="{Binding OpenSettingsPageCommand}" 
-                            HorizontalOptions="Center" Padding="20,20,20,20" Margin="0,20,0,0" BackgroundColor="#017ED8" TextColor="White" FontAttributes="Bold" WidthRequest="150"/>
-
-        </StackLayout>
+        <Grid BackgroundColor="{OnPlatform Android=#FFFFFF, UWP=#FFA4FD}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Image Source="logomain.png" HeightRequest="300"/>
+            </StackLayout>
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FFA4FD}" HeightRequest="10"/>
+                <StackLayout Orientation="Horizontal" Padding="0,25,0,25">
+                    <StackLayout HorizontalOptions="CenterAndExpand">
+                        <ImageButton Command="{Binding OpenOverviewPageCommand}" Source="cocktails.png" HeightRequest="100" BackgroundColor="Transparent"/>
+                        <Label Text="My drinks" TextColor="#E240E3" HorizontalOptions="Center"/>
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="CenterAndExpand">
+                        <ImageButton Command="{Binding OpenSettingsPageCommand}" Source="user.png" HeightRequest="100" BackgroundColor="Transparent"/>
+                        <Label Text="My profile" TextColor="#34B3D9" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FFA4FD}" HeightRequest="10"/>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

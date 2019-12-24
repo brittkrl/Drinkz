@@ -16,65 +16,85 @@
                      Command="{Binding SaveCocktailCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView AbsoluteLayout.LayoutFlags="All"
-                        AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <StackLayout>
-                <StackLayout>
-                    <Image Source="{Binding ImageUrl}" WidthRequest="200" HeightRequest="200" HorizontalOptions="Center" />
-                    <Button HorizontalOptions="Center" Text="Take Photo" Command="{Binding TakePhoto}"  BackgroundColor="{Binding ThemeColour}"/>
-                </StackLayout>
-                <Label Text="Name" />
-                <Entry Text="{Binding CocktailName}" Placeholder="Enter a name" />
-                <Label Text="{Binding CocktailNameError}"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">
+                <Image Source="{Binding ImageUrl}" HeightRequest="150" HorizontalOptions="Center" />
+                <ImageButton Source="camera.png" Command="{Binding TakePhoto}" HeightRequest="25" BackgroundColor="Transparent"/>
+            </StackLayout>
+            <Frame Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+                   Padding="10" Margin="10" BorderColor="#E240E3" 
+                   HasShadow="True">
+                <StackLayout VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand" >
+                    <Label Text="Name" FontSize="Medium"/>
+                    <Entry Text="{Binding CocktailName}" Placeholder="Enter a name" />
+                    <Label Text="{Binding CocktailNameError}"
                            IsVisible="{Binding CocktailNameErrorVisible}" 
                            StyleClass="errormessage" />
-                <Label Text="Preparation" />
-                <Editor Text="{Binding CocktailPreparation}" HeightRequest="100" Placeholder="Describe the preparation here" />
-                <Label Text="{Binding CocktailPreparationError}"
+                    <Label Text="Preparation" FontSize="Medium"/>
+                    <Editor Text="{Binding CocktailPreparation}" HeightRequest="75" Placeholder="Describe the preparation here" />
+                    <Label Text="{Binding CocktailPreparationError}"
                            IsVisible="{Binding CocktailPreparationErrorVisible}" 
                            StyleClass="errormessage" />
-                <StackLayout>
-                    <Label Text="Rating" 
-                               VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
-                    <numeric:SfNumericUpDown Value="{Binding Rating}" Minimum="1" Maximum="10" SpinButtonAlignment="Both" IsEditable="False"/>
-                    </StackLayout>
-                <Button Text="Add new ingredient" 
-                            Command="{Binding OpenIngredientPageCommand}" 
-                            HorizontalOptions="End" Margin="0,20,0,0" />
-                <ListView ItemsSource="{Binding Ingredients}"
-                              HasUnevenRows="False" RowHeight="60">
-                    <ListView.Behaviors>
-                        <bhv:EventToCommandBehavior 
+                </StackLayout>
+            </Frame>
+            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="#34B3D9"/>
+            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <Label Text="Rating" FontSize="Medium"/>
+                <numeric:SfNumericUpDown Value="{Binding Rating}" Minimum="1" Maximum="10" SpinButtonAlignment="Both" IsEditable="False"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Ingredients" FontSize="Medium"/>
+                    <ImageButton Command="{Binding OpenIngredientPageCommand}" Source="new.png" HeightRequest="25" BackgroundColor="Transparent"/>
+                </StackLayout>
+                <Frame Padding="10" Margin="10" BorderColor="#34B3D9" HasShadow="True">
+                    <ListView ItemsSource="{Binding Ingredients}"
+                              HasUnevenRows="False" RowHeight="30">
+                        <ListView.Behaviors>
+                            <bhv:EventToCommandBehavior 
                                 EventName="ItemTapped"  
                                 Command="{Binding OpenIngredientPageCommand}"
                                 EventArgsConverter="{StaticResource ItemTappedEventArgsConv}" />
-                    </ListView.Behaviors>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.ContextActions>
-                                    <MenuItem Command="{Binding BindingContext.OpenIngredientPageCommand, Source={x:Reference page}}" 
+                        </ListView.Behaviors>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                        <MenuItem Command="{Binding BindingContext.OpenIngredientPageCommand, Source={x:Reference page}}" 
                                                   CommandParameter="{Binding .}" 
                                                   Text="Edit" />
-                                    <MenuItem Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference page}}"
+                                        <MenuItem Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference page}}"
                                                   CommandParameter="{Binding .}"
                                                   Text="Delete" IsDestructive="True" />
-                                </ViewCell.ContextActions>
-                                <StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Name}" 
-                                               VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
-                                        <Label Text="{Binding Amount, StringFormat='{0} ml'}"/>
-                                        <Label Text="{Binding OptionalAmount}"/>
-
+                                    </ViewCell.ContextActions>
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding Name}" />
+                                            <Label Text="{Binding Amount, StringFormat='{0} ml'}"/>
+                                        </StackLayout>
                                     </StackLayout>
-
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Frame>
             </StackLayout>
-        </ScrollView>
+            <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="#34B3D9"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -149,7 +149,15 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="camera.png" />
     <Content Include="cocktails.png" />
+    <Content Include="cosmopolitan.jpg" />
+    <Content Include="darknstormy.jpg" />
+    <Content Include="manhattan.jpg" />
+    <Content Include="margarita.jpg" />
+    <Content Include="negroni.jpg" />
+    <Content Include="new.png" />
+    <Content Include="zombie.jpg" />
     <Content Include="logomain.png" />
     <Content Include="noimage.png" />
     <Content Include="Properties\Default.rd.xml" />
@@ -187,6 +195,7 @@
       <Name>B4.EE.KarlstromB</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

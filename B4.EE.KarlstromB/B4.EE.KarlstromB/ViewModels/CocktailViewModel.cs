@@ -1,5 +1,6 @@
 ﻿using B4.EE.KarlstromB.Domain.Models;
 using B4.EE.KarlstromB.Domain.Services;
+using B4.EE.KarlstromB.Domain.Services.Mocking;
 using B4.EE.KarlstromB.Domain.Validators;
 using FluentValidation;
 using FreshMvvm;
@@ -20,16 +21,21 @@ namespace B4.EE.KarlstromB.ViewModels
     {
         private readonly ICocktailsService cocktailsService;
         private readonly IAppSettingsService settingsService;
+        private readonly MockCocktailsService mockCocktailsService;
+
         private IValidator cocktailValidator;
         private AppSettings settings;
         private Cocktail currentCocktail;
         private bool isNew = true;
 
-        public CocktailViewModel(ICocktailsService cocktailsService,
-            IAppSettingsService settingsService)
+        public CocktailViewModel(
+            ICocktailsService cocktailsService,
+            IAppSettingsService settingsService,
+            MockCocktailsService mockCocktailsService)
         {
             this.cocktailsService = cocktailsService;
             this.settingsService = settingsService;
+            this.mockCocktailsService = mockCocktailsService;
             cocktailValidator = new CocktailValidator();
         }
 
@@ -207,6 +213,7 @@ namespace B4.EE.KarlstromB.ViewModels
             {
                 isNew = false;
                 PageTitle = "Edit cocktail";
+                
                 currentCocktail = await cocktailsService.GetCocktail(currentCocktail.Id);
             }
             else

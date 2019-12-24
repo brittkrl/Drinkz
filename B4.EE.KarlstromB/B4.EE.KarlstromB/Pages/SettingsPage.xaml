@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"             
              mc:Ignorable="d"
-             Style="{StaticResource MainLayout}"
              x:Class="B4.EE.KarlstromB.Pages.SettingsPage"
              Title="Settings">
     <ContentPage.ToolbarItems>
@@ -13,21 +13,34 @@
                      Command="{Binding SaveSettingsCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView>
-            <TableRoot>
-                <TableSection Title="User settings">
-                    <EntryCell Text="{Binding FirstName}" Label="First name" Keyboard="Text" />
-                    <TextCell Text="{Binding ErrorFirstName}" TextColor="#f46842" />
-                    <EntryCell Text="{Binding LastName}" Label="Last name" Keyboard="Text" />
-                    <TextCell Text="{Binding ErrorLastName}" TextColor="#f46842" />
-                    <EntryCell Text="{Binding Email}" Label="E-mail" Keyboard="Email" />
-                    <TextCell Text="{Binding ErrorEmail}" TextColor="#f46842" />
-                </TableSection>
-                <!--<TableSection Title="General settings">
-                    <SwitchCell On="{Binding EnableListSharing}" Text="Enable List sharing" />
-                    <SwitchCell On="{Binding EnableNotifications}" Text="Enable notifications" />
-                </TableSection>-->
-            </TableRoot>
-        </TableView>
+        <StackLayout BackgroundColor="{OnPlatform Android=#FFFFFF, UWP=#FFA4FD}">
+            <Image Source="settings.png" HeightRequest="250"/>
+
+            <StackLayout BackgroundColor="White">
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+                <StackLayout  Padding="50,25,50,25">
+
+                    <inputLayout:SfTextInputLayout Hint="First name"
+                                                   FocusedColor="#E240E3"
+                                                   UnfocusedColor="Silver">
+                        <Entry Text="{Binding FirstName}" Placeholder="First name" Keyboard="Text" />
+                    </inputLayout:SfTextInputLayout>
+
+                    <inputLayout:SfTextInputLayout Hint="Last name"
+                                                   FocusedColor="#E240E3"
+                                                   UnfocusedColor="Silver">
+                        <Entry Text="{Binding LastName}" Placeholder="Last name" Keyboard="Text" />
+                    </inputLayout:SfTextInputLayout>
+
+                    <inputLayout:SfTextInputLayout Hint="E-mail address"
+                                                   FocusedColor="#E240E3"
+                                                   UnfocusedColor="Silver">
+                        <Entry Text="{Binding Email}" Placeholder="E-mail address" Keyboard="Email" />
+                    </inputLayout:SfTextInputLayout>
+
+                </StackLayout>
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

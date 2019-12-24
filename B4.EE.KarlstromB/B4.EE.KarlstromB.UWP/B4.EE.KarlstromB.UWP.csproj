@@ -158,6 +158,7 @@
     <Content Include="margarita.jpg" />
     <Content Include="negroni.jpg" />
     <Content Include="newingredient.png" />
+    <Content Include="settings.png" />
     <Content Include="zombie.jpg" />
     <Content Include="logomain.png" />
     <Content Include="noimage.png" />

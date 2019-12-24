@@ -153,10 +153,11 @@
     <Content Include="cocktails.png" />
     <Content Include="cosmopolitan.jpg" />
     <Content Include="darknstormy.jpg" />
+    <Content Include="ingredients.png" />
     <Content Include="manhattan.jpg" />
     <Content Include="margarita.jpg" />
     <Content Include="negroni.jpg" />
-    <Content Include="new.png" />
+    <Content Include="newingredient.png" />
     <Content Include="zombie.jpg" />
     <Content Include="logomain.png" />
     <Content Include="noimage.png" />

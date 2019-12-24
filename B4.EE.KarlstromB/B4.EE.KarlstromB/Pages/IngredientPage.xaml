@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
              xmlns:numeric="clr-namespace:Syncfusion.SfNumericUpDown.XForms;assembly=Syncfusion.SfNumericUpDown.XForms"
              mc:Ignorable="d"
-             Style="{StaticResource MainLayout}"
              Title="{Binding PageTitle}"
              x:Name="page"   
              x:Class="B4.EE.KarlstromB.Pages.IngredientPage">
@@ -16,25 +15,50 @@
                      Command="{Binding SaveIngredientCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <AbsoluteLayout>
-            <ScrollView AbsoluteLayout.LayoutFlags="All"
-                        AbsoluteLayout.LayoutBounds="0,0,1,1">
-                <StackLayout>
+        <Grid BackgroundColor="{OnPlatform Android=#FFFFFF, UWP=#FECDFF}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Image Source="ingredients.png" HeightRequest="180"/>
+            </StackLayout>
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+                <StackLayout Padding="50,25,50,25">
                     <Picker Title="Select an ingredient" 
                             ItemsSource="{Binding BasicIngredients}" 
                             ItemDisplayBinding="{Binding Name}"
-                            SelectedItem="{Binding SelectedIngredient, Mode=TwoWay}" />
-
-                    <Label Text="Custom ingredient name" />
-                    <Entry Text="{Binding IngredientName}" Placeholder="Enter a new ingredient" />
-
+                            SelectedItem="{Binding SelectedIngredient, Mode=TwoWay}" 
+                            BackgroundColor="#F5F5F5"/>
                     <Label Text="Amount (in ml)" />
-                    <numeric:SfNumericUpDown Value="{Binding Amount}" x:Name="numericUpDown" Minimum="10" Maximum="200" StepValue="5" SpinButtonAlignment="Both" IsEditable="False"/>
-                    
-                    <Label Text="Optional amount" />
-                    <Entry Text="{Binding OptionalAmount}" Placeholder="e.g. 1 slice" />
+                    <numeric:SfNumericUpDown Value="{Binding Amount}" Minimum="0" Maximum="200" StepValue="5" SpinButtonAlignment="Both" IsEditable="False"  BackgroundColor="#F5F5F5"/>
                 </StackLayout>
-            </ScrollView>
-        </AbsoluteLayout>
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+                <StackLayout Padding="50,25,50,25">
+                    <Label Text="Customized ingredient" FontSize="Medium"/>
+
+                    <inputLayout:SfTextInputLayout Hint="Custom ingredient name"
+                                                   FocusedColor="#E240E3"
+                                                   UnfocusedColor="Silver">
+                        <Entry Text="{Binding IngredientName}" Placeholder="Enter a new ingredient" />
+                    </inputLayout:SfTextInputLayout>
+
+                    <inputLayout:SfTextInputLayout Hint="Optional amount"
+                                                   FocusedColor="#E240E3"
+                                                   UnfocusedColor="Silver">
+                        <Entry Text="{Binding OptionalAmount}" Placeholder="e.g. 1 slice" />
+                    </inputLayout:SfTextInputLayout>
+                </StackLayout>
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

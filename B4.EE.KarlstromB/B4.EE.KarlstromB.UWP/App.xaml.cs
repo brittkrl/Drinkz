@@ -1,4 +1,5 @@
 ﻿using Syncfusion.SfNumericUpDown.XForms.UWP;
+using Syncfusion.XForms.UWP.TextInputLayout;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,8 +42,6 @@ namespace B4.EE.KarlstromB.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
-
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -56,6 +55,7 @@ namespace B4.EE.KarlstromB.UWP
 
                 List<Assembly> assembliesToInclude = new List<Assembly>();
 
+                assembliesToInclude.Add(typeof(SfTextInputLayoutRenderer).GetTypeInfo().Assembly);
                 assembliesToInclude.Add(typeof(SfNumericUpDownRenderer).GetTypeInfo().Assembly);
 
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude);

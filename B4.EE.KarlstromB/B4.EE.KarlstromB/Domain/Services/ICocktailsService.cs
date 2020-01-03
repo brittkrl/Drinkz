@@ -9,6 +9,8 @@ namespace B4.EE.KarlstromB.Domain.Services
 {
     public interface ICocktailsService
     {
+        bool DataStoreExists { get; }
+        Task<IQueryable<Cocktail>> GetAllCocktails();
         Task<Cocktail> GetCocktail(Guid id);
         Task<IQueryable<Cocktail>> GetCocktailsForUser(Guid userid);
         Task<Cocktail> UpdateCocktail(Cocktail cocktail);

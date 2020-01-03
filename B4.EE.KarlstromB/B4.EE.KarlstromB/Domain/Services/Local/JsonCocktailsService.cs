@@ -25,9 +25,12 @@ namespace B4.EE.KarlstromB.Domain.Services.Local
             };
         }
 
+        public bool DataStoreExists => File.Exists(_filePath);
+
         public async Task<Cocktail> AddCocktail(Cocktail cocktail)
         {
-            var cocktails = await GetAllCocktails();
+            var cocktails = (await GetAllCocktails()).ToList();
+            cocktail.Id = Guid.NewGuid();
             cocktails.Add(cocktail);
             SaveCocktailsToJsonFile(cocktails);
             return await GetCocktail(cocktail.Id);
@@ -35,7 +38,7 @@ namespace B4.EE.KarlstromB.Domain.Services.Local
 
         public async Task<Cocktail> DeleteCocktail(Guid id)
         {
-            var cocktails = await GetAllCocktails();
+            var cocktails = (await GetAllCocktails()).ToList();
             var cocktailToRemove = cocktails.FirstOrDefault(e => e.Id == id);
             cocktails.Remove(cocktailToRemove);
             SaveCocktailsToJsonFile(cocktails);
@@ -46,7 +49,7 @@ namespace B4.EE.KarlstromB.Domain.Services.Local
         {
             var cocktails = await GetAllCocktails();
             return cocktails.FirstOrDefault(e => e.Id == id);
-        }       
+        }
 
         public async Task<IQueryable<Cocktail>> GetCocktailsForUser(Guid userid)
         {
@@ -60,24 +63,25 @@ namespace B4.EE.KarlstromB.Domain.Services.Local
             return await AddCocktail(cocktail);
         }
 
-        protected async Task<IList<Cocktail>> GetAllCocktails()
-        {
-            try
-            {
-                string cocktailsJson = File.ReadAllText(_filePath);
-                var cocktails = JsonConvert.DeserializeObject<IList<Cocktail>>(cocktailsJson);
-                return await Task.FromResult(cocktails);
-            }
-            catch
-            {
-                return (new List<Cocktail>());
-            }
-        }
-
         protected void SaveCocktailsToJsonFile(IEnumerable<Cocktail> cocktails)
         {
             string cocktailsJson = JsonConvert.SerializeObject(cocktails, Formatting.Indented, _serializerSettings);
             File.WriteAllText(_filePath, cocktailsJson);
+        }
+
+        public async Task<IQueryable<Cocktail>> GetAllCocktails()
+        {
+            try
+            {
+                string cocktailsJson = File.ReadAllText(_filePath);
+                var cocktails = JsonConvert.DeserializeObject<IEnumerable<Cocktail>>(cocktailsJson);
+                var cocktailsQuery = cocktails.AsQueryable();
+                return await Task.FromResult(cocktailsQuery);
+            }
+            catch
+            {
+                return new List<Cocktail>().AsQueryable();
+            }
         }
     }
 }

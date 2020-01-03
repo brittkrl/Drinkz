@@ -17,6 +17,7 @@ namespace B4.EE.KarlstromB
             FreshIOC.Container.Register<IAppSettingsService>(new JsonAppSettingsService());
             FreshIOC.Container.Register<IUsersService>(new JsonUsersService());
             FreshIOC.Container.Register<ICocktailsService>(new JsonCocktailsService());
+            FreshIOC.Container.Register<ISeederService, DataSeederService>();
 
             MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
         }

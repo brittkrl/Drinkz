@@ -103,7 +103,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="add.png" />
+    <Content Include="Images\add.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -149,24 +149,24 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="camera.png" />
-    <Content Include="cocktails.png" />
+    <Content Include="Images\camera.png" />
+    <Content Include="Images\cocktails.png" />
     <Content Include="cosmopolitan.jpg" />
     <Content Include="darknstormy.jpg" />
-    <Content Include="file.png" />
-    <Content Include="ingredients.png" />
+    <Content Include="Images\ingredients.png" />
+    <Content Include="Images\upload.png" />
     <Content Include="manhattan.jpg" />
     <Content Include="margarita.jpg" />
     <Content Include="negroni.jpg" />
-    <Content Include="newingredient.png" />
-    <Content Include="settings.png" />
+    <Content Include="Images\newingredient.png" />
+    <Content Include="Images\settings.png" />
     <Content Include="zombie.jpg" />
-    <Content Include="logomain.png" />
-    <Content Include="noimage.png" />
+    <Content Include="Images\logomain.png" />
+    <Content Include="Images\noimage.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="save.png" />
-    <Content Include="splash.png" />
-    <Content Include="user.png" />
+    <Content Include="Images\save.png" />
+    <Content Include="Images\splash.png" />
+    <Content Include="Images\user.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

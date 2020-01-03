@@ -9,7 +9,8 @@
              x:Class="B4.EE.KarlstromB.Pages.OverviewPage"
              Title="Cocktails">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" IconImageSource="add.png"
+        <ToolbarItem Text="Add" 
+                     IconImageSource="{OnPlatform UWP=Images/add.png}"
                      Command="{Binding OpenCocktailPageCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
@@ -26,7 +27,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
-                <Image Source="logomain.png" HeightRequest="200"/>
+                <Image HeightRequest="200">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="ImageSource">
+                            <On Platform="Android">logomain.png</On>
+                            <On Platform="UWP">Images/logomain.png</On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
             </StackLayout>
             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
@@ -63,43 +71,18 @@
                             </ListView>
                         </StackLayout>
                     </Frame>
-                    <ImageButton Source="newingredient.png" Command="{Binding OpenCocktailPageCommand}" HeightRequest="35" BackgroundColor="Transparent"/>
+                    <ImageButton Command="{Binding OpenCocktailPageCommand}" HeightRequest="35" BackgroundColor="Transparent">
+                        <ImageButton.Source>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="Android">newingredient.png</On>
+                                <On Platform="UWP">Images/newingredient.png</On>
+                            </OnPlatform>
+                        </ImageButton.Source>
+                    </ImageButton>
 
                 </StackLayout>
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
-            </StackLayout>      
+            </StackLayout>
         </Grid>
-        <!--<StackLayout>
-            <ListView ItemsSource="{Binding Cocktails}"
-                          HasUnevenRows="False" >
-                <ListView.Behaviors>
-                    <bhv:EventToCommandBehavior 
-                        EventName="ItemTapped"  
-                        Command="{Binding OpenCocktailPageCommand}"
-                        EventArgsConverter="{StaticResource ItemTappedEventArgsConv}" />
-                </ListView.Behaviors>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Command="{Binding BindingContext.OpenCocktailPageCommand, Source={x:Reference page}}" 
-                                              CommandParameter="{Binding .}" 
-                                              Text="Edit" />
-                                <MenuItem Command="{Binding BindingContext.DeleteCocktailCommand, Source={x:Reference page}}"
-                                              CommandParameter="{Binding .}" 
-                                              Text="Delete" 
-                                              IsDestructive="True" />
-                            </ViewCell.ContextActions>
-                            <StackLayout>
-                                <Image Source="{Binding ImageUrl}"
-                                   HeightRequest="150" />
-                                <Label Text="{Binding Name}" 
-                                           VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>-->
     </ContentPage.Content>
 </ContentPage>

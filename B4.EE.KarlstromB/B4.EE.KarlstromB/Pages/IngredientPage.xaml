@@ -11,7 +11,7 @@
              x:Class="B4.EE.KarlstromB.Pages.IngredientPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" 
-                     IconImageSource="{OnPlatform UWP=save.png}" 
+                     IconImageSource="{OnPlatform UWP=Images/save.png}" 
                      Command="{Binding SaveIngredientCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
@@ -28,7 +28,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                <Image Source="ingredients.png" HeightRequest="180"/>
+                <Image HeightRequest="180">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="ImageSource">
+                            <On Platform="Android">ingredients.png</On>
+                            <On Platform="UWP">Images/ingredients.png</On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
             </StackLayout>
             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>

@@ -33,8 +33,22 @@
                     <StackLayout>
                         <Image Source="{Binding ImageUrl}" HeightRequest="150" HorizontalOptions="Center" />
                         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                            <ImageButton Source="camera.png" Command="{Binding TakePhotoCommand}" HeightRequest="25" BackgroundColor="Transparent"/>
-                            <ImageButton Source="file.png" Command="{Binding UploadPhotoCommand}" HeightRequest="25" BackgroundColor="Transparent"/>
+                            <ImageButton Command="{Binding TakePhotoCommand}" HeightRequest="25" BackgroundColor="Transparent">
+                                <ImageButton.Source>
+                                    <OnPlatform x:TypeArguments="ImageSource">
+                                        <On Platform="Android">camera.png</On>
+                                        <On Platform="UWP">Images/camera.png</On>
+                                    </OnPlatform>
+                                </ImageButton.Source>
+                            </ImageButton>
+                            <ImageButton Command="{Binding UploadPhotoCommand}" HeightRequest="25" BackgroundColor="Transparent">
+                                <ImageButton.Source>
+                                    <OnPlatform x:TypeArguments="ImageSource">
+                                        <On Platform="Android">upload.png</On>
+                                        <On Platform="UWP">Images/upload.png</On>
+                                    </OnPlatform>
+                                </ImageButton.Source>
+                            </ImageButton>
                         </StackLayout>
                     </StackLayout>
                 </Frame>
@@ -67,7 +81,14 @@
                         <StackLayout HorizontalOptions="CenterAndExpand">
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Ingredients" FontSize="Medium"/>
-                                <ImageButton Command="{Binding OpenIngredientPageCommand}" Source="newingredient.png" HeightRequest="25" BackgroundColor="Transparent"/>
+                                <ImageButton Command="{Binding OpenIngredientPageCommand}" HeightRequest="25" BackgroundColor="Transparent">
+                                    <ImageButton.Source>
+                                        <OnPlatform x:TypeArguments="ImageSource">
+                                            <On Platform="Android">newingredient.png</On>
+                                            <On Platform="UWP">Images/newingredient.png</On>
+                                        </OnPlatform>
+                                    </ImageButton.Source>
+                                </ImageButton>
                             </StackLayout>
                             <Frame Padding="10" Margin="10" BorderColor="#34B3D9" HasShadow="True" HeightRequest="100">
                                 <ListView ItemsSource="{Binding Ingredients}"
@@ -106,87 +127,5 @@
                 </StackLayout>
             </Grid>
         </ScrollView>
-        <!--<Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="300" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="20" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <StackLayout Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center">
-                <Image Source="{Binding ImageUrl}" HeightRequest="150" HorizontalOptions="Center" />
-                <ImageButton Source="camera.png" Command="{Binding TakePhoto}" HeightRequest="25" BackgroundColor="Transparent"/>
-            </StackLayout>
-            <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand" >
-                <inputLayout:SfTextInputLayout Hint="Name"
-                                                   FocusedColor="#E240E3"
-                                                   UnfocusedColor="Silver">
-                    <Entry Text="{Binding CocktailName}"/>
-                </inputLayout:SfTextInputLayout>
-                <Label Text="{Binding CocktailNameError}"
-                           IsVisible="{Binding CocktailNameErrorVisible}" 
-                           StyleClass="errormessage" />
-                <inputLayout:SfTextInputLayout Hint="Preparation"
-                                                   FocusedColor="#E240E3"
-                                                   UnfocusedColor="Silver">
-                    <Editor Text="{Binding CocktailPreparation}" HeightRequest="75" Placeholder="Describe the preparation here" />
-                </inputLayout:SfTextInputLayout>
-                <Label Text="{Binding CocktailPreparationError}"
-                           IsVisible="{Binding CocktailPreparationErrorVisible}" 
-                           StyleClass="errormessage" />
-            </StackLayout>
-            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="#34B3D9"/>
-            <StackLayout Grid.Row="2" Grid.Column="0">
-                <Label Text="Rating" FontSize="Medium"/>
-                <numeric:SfNumericUpDown Value="{Binding Rating}" Minimum="1" Maximum="10" SpinButtonAlignment="Both" IsEditable="False" BackgroundColor="#F5F5F5"/>
-            </StackLayout>
-
-            <StackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Ingredients" FontSize="Medium"/>
-                    <ImageButton Command="{Binding OpenIngredientPageCommand}" Source="newingredient.png" HeightRequest="25" BackgroundColor="Transparent"/>
-                </StackLayout>
-                <Frame Padding="10" Margin="10" BorderColor="#34B3D9" HasShadow="True">
-                    <ListView ItemsSource="{Binding Ingredients}"
-                              HasUnevenRows="False" RowHeight="30">
-                        <ListView.Behaviors>
-                            <bhv:EventToCommandBehavior 
-                                EventName="ItemTapped"  
-                                Command="{Binding OpenIngredientPageCommand}"
-                                EventArgsConverter="{StaticResource ItemTappedEventArgsConv}" />
-                        </ListView.Behaviors>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.ContextActions>
-                                        <MenuItem Command="{Binding BindingContext.OpenIngredientPageCommand, Source={x:Reference page}}" 
-                                                  CommandParameter="{Binding .}" 
-                                                  Text="Edit" />
-                                        <MenuItem Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference page}}"
-                                                  CommandParameter="{Binding .}"
-                                                  Text="Delete" IsDestructive="True" />
-                                    </ViewCell.ContextActions>
-                                    <StackLayout>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding Name}" />
-                                            <Label Text="{Binding Amount, StringFormat='{0} ml'}"/>
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Frame>
-            </StackLayout>
-            <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="#34B3D9"/>
-        </Grid>-->
     </ContentPage.Content>
 </ContentPage>

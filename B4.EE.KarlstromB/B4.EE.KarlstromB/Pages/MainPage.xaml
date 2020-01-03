@@ -19,21 +19,42 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                <Image Source="logomain.png" HeightRequest="300"/>
+                <Image HeightRequest="300">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="ImageSource">
+                            <On Platform="Android">logomain.png</On>
+                            <On Platform="UWP">Images/logomain.png</On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
             </StackLayout>
             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
-                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FFA4FD}" HeightRequest="10"/>
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
                 <StackLayout Orientation="Horizontal" Padding="0,25,0,25">
                     <StackLayout HorizontalOptions="CenterAndExpand">
-                        <ImageButton Command="{Binding OpenOverviewPageCommand}" Source="cocktails.png" HeightRequest="100" BackgroundColor="Transparent"/>
+                        <ImageButton Command="{Binding OpenOverviewPageCommand}" HeightRequest="100" BackgroundColor="Transparent">
+                            <ImageButton.Source>
+                                <OnPlatform x:TypeArguments="ImageSource">
+                                    <On Platform="Android">cocktails.png</On>
+                                    <On Platform="UWP">Images/cocktails.png</On>
+                                </OnPlatform>
+                            </ImageButton.Source>
+                        </ImageButton>
                         <Label Text="My drinks" TextColor="#E240E3" HorizontalOptions="Center"/>
                     </StackLayout>
                     <StackLayout HorizontalOptions="CenterAndExpand">
-                        <ImageButton Command="{Binding OpenSettingsPageCommand}" Source="user.png" HeightRequest="100" BackgroundColor="Transparent"/>
+                        <ImageButton Command="{Binding OpenSettingsPageCommand}" HeightRequest="100" BackgroundColor="Transparent">
+                            <ImageButton.Source>
+                                <OnPlatform x:TypeArguments="ImageSource">
+                                    <On Platform="Android">user.png</On>
+                                    <On Platform="UWP">Images/user.png</On>
+                                </OnPlatform>
+                            </ImageButton.Source>
+                        </ImageButton>
                         <Label Text="My profile" TextColor="#34B3D9" HorizontalOptions="Center"/>
                     </StackLayout>
                 </StackLayout>
-                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FFA4FD}" HeightRequest="10"/>
+                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

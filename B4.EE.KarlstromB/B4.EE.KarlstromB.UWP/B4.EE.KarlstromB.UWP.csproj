@@ -153,6 +153,7 @@
     <Content Include="cocktails.png" />
     <Content Include="cosmopolitan.jpg" />
     <Content Include="darknstormy.jpg" />
+    <Content Include="file.png" />
     <Content Include="ingredients.png" />
     <Content Include="manhattan.jpg" />
     <Content Include="margarita.jpg" />

@@ -1,6 +1,5 @@
 ﻿using B4.EE.KarlstromB.Domain.Models;
 using B4.EE.KarlstromB.Domain.Services;
-using B4.EE.KarlstromB.Domain.Services.Mocking;
 using B4.EE.KarlstromB.Domain.Validators;
 using FluentValidation;
 using FreshMvvm;
@@ -21,7 +20,6 @@ namespace B4.EE.KarlstromB.ViewModels
     {
         private readonly ICocktailsService cocktailsService;
         private readonly IAppSettingsService settingsService;
-        private readonly MockCocktailsService mockCocktailsService;
 
         private IValidator cocktailValidator;
         private AppSettings settings;
@@ -30,12 +28,10 @@ namespace B4.EE.KarlstromB.ViewModels
 
         public CocktailViewModel(
             ICocktailsService cocktailsService,
-            IAppSettingsService settingsService,
-            MockCocktailsService mockCocktailsService)
+            IAppSettingsService settingsService)
         {
             this.cocktailsService = cocktailsService;
             this.settingsService = settingsService;
-            this.mockCocktailsService = mockCocktailsService;
             cocktailValidator = new CocktailValidator();
         }
 
@@ -113,6 +109,8 @@ namespace B4.EE.KarlstromB.ViewModels
             set { imageUrl = value; RaisePropertyChanged(nameof(ImageUrl)); }
         }
 
+        public string ImageName { get; set; }
+
         private MediaFile selectedImage;
         public MediaFile SelectedImage
         {
@@ -182,7 +180,7 @@ namespace B4.EE.KarlstromB.ViewModels
                 LoadCocktail();
             });
 
-        public ICommand TakePhoto => new Command(
+        public ICommand UploadPhotoCommand => new Command(
             async () =>
             {
                 if (!CrossMedia.Current.IsPickPhotoSupported)
@@ -207,6 +205,30 @@ namespace B4.EE.KarlstromB.ViewModels
                 ImageUrl = selectedImage.Path;
             });
 
+        public ICommand TakePhotoCommand => new Command(
+            async () =>
+            {
+                await CrossMedia.Current.Initialize();
+                if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                {
+                    await CoreMethods.DisplayAlert("Error", "This is not supported on your device", "Continue");
+                    return;
+                }
+
+                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                {
+                    Name = $"{ImageName}.jpg"
+                });
+
+                if (file == null)
+                {
+                    await CoreMethods.DisplayAlert("Error", "Unable to take photo", "Continue");
+                    return;
+                }
+
+                ImageUrl = file.Path;
+            });
+
         private async Task RefreshCocktail()
         {
             if (currentCocktail != null)
@@ -223,7 +245,7 @@ namespace B4.EE.KarlstromB.ViewModels
                 currentCocktail = new Cocktail();
                 currentCocktail.Id = Guid.NewGuid();
                 currentCocktail.UserId = settings.CurrentUserId;
-                currentCocktail.Ingredients = new List<Ingredient>();
+                currentCocktail.Ingredients = new ObservableCollection<Ingredient>();
                 currentCocktail.ImageUrl = "noimage.png";
             }
             LoadCocktail();

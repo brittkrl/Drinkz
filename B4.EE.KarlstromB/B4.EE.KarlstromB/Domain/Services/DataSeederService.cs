@@ -86,7 +86,7 @@ namespace B4.EE.KarlstromB.Domain.Services
                     {
                         Id = Guid.Parse("00000000-1111-0000-0000-000000000003"),
                         Name = "Manhattan",
-                        Preparation = "Stir ingredients in a mixing glass with ice. Strain into chilled martini glass or cocktail coupe.",
+                        Preparation = "Stir ingredients in a mixing glass with ice. Add 2 dashes of Angostura bitters. Strain into chilled martini glass or cocktail coupe.",
                         UserId = Guid.Parse("00000000-1111-2222-0000-000000000001"),
                         Rating = 7,
                         ImageUrl = "manhattan.jpg",
@@ -115,7 +115,7 @@ namespace B4.EE.KarlstromB.Domain.Services
                     {
                         Id = Guid.Parse("00000000-1111-0000-0000-000000000004"),
                         Name = "Dark 'n Stormy",
-                        Preparation = "Fill a highball glass with ice and add rum and ginger beer. Garnish with lime.",
+                        Preparation = "Fill a highball glass with ice and add rum and ginger beer. Add 1 dash of Angostura bitters. Garnish with lime.",
                         UserId = Guid.Parse("00000000-1111-2222-0000-000000000001"),
                         Rating = 9,
                         ImageUrl = "darknstormy.jpg",

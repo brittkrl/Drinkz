@@ -10,6 +10,7 @@
         <ResourceDictionary>
             <!-- Converters -->
             <conv:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConv" />
+            <conv:StringAmountToOptionalAmountConverter x:Key="StringAmountToOptionalAmountConv"/>
 
             <!-- Common Colors -->
             <Color x:Key="ColorPrimary">#FBAFDF</Color>

@@ -12,7 +12,7 @@
              x:Class="B4.EE.KarlstromB.Pages.CocktailPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" 
-                     IconImageSource="{OnPlatform UWP=save.png}" 
+                     IconImageSource="{OnPlatform UWP=Images/save.png}" 
                      Command="{Binding SaveCocktailCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
@@ -112,8 +112,9 @@
                                                 </ViewCell.ContextActions>
                                                 <StackLayout>
                                                     <StackLayout Orientation="Horizontal">
-                                                        <Label Text="{Binding Name}" />
-                                                        <Label Text="{Binding Amount, StringFormat='{0} ml'}"/>
+                                                        <Label Text="{Binding Name, StringFormat='{0}:'}" />
+                                                        <Label Text="{Binding Path=Amount, Converter={StaticResource StringAmountToOptionalAmountConv}}"/>
+                                                        <Label Text="{Binding OptionalAmount}" />
                                                     </StackLayout>
                                                 </StackLayout>
                                             </ViewCell>

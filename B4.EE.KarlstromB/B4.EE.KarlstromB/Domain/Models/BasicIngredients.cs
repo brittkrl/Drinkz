@@ -187,6 +187,21 @@ namespace B4.EE.KarlstromB.Domain.Models
                 Id = Guid.NewGuid(),
                 Name = "Red Vodka"
             });
+            BasicIngredients.Add(new Ingredient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Ice"
+            });
+            BasicIngredients.Add(new Ingredient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Lime"
+            });
+            BasicIngredients.Add(new Ingredient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Angostura bitters"
+            });
         }
     }
 }

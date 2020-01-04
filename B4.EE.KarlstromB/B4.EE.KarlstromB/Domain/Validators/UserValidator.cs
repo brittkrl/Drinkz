@@ -10,12 +10,6 @@ namespace B4.EE.KarlstromB.Domain.Validators
     {
         public UserValidator()
         {
-            RuleFor(user => user.EmailAddress)
-                .NotEmpty()
-                    .WithMessage("E-mail cannot be empty")
-                .EmailAddress()
-                    .WithMessage("Please enter a valid e-mail address");
-
             RuleFor(bucket => bucket.FirstName)
                 .NotEmpty()
                 .WithMessage("Please enter a valid name");

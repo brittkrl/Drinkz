@@ -6,7 +6,7 @@
              xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"             
              mc:Ignorable="d"
              x:Class="B4.EE.KarlstromB.Pages.SettingsPage"
-             Title="Settings">
+             Title="Change profile">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" 
                      IconImageSource="{OnPlatform UWP=Images/save.png}" 
@@ -14,7 +14,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout BackgroundColor="{OnPlatform Android=#FFFFFF, UWP=#FFA4FD}">
-            <Image HeightRequest="250">
+            <Image HeightRequest="200" Margin="30">
                 <Image.Source>
                     <OnPlatform x:TypeArguments="ImageSource">
                         <On Platform="Android">settings.png</On>
@@ -26,25 +26,19 @@
             <StackLayout BackgroundColor="White">
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
                 <StackLayout  Padding="50,25,50,25">
-
                     <inputLayout:SfTextInputLayout Hint="First name"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
                         <Entry Text="{Binding FirstName}" Placeholder="First name" Keyboard="Text" />
                     </inputLayout:SfTextInputLayout>
-
+                    
                     <inputLayout:SfTextInputLayout Hint="Last name"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
                         <Entry Text="{Binding LastName}" Placeholder="Last name" Keyboard="Text" />
                     </inputLayout:SfTextInputLayout>
-
-                    <inputLayout:SfTextInputLayout Hint="E-mail address"
-                                                   FocusedColor="#E240E3"
-                                                   UnfocusedColor="Silver">
-                        <Entry Text="{Binding Email}" Placeholder="E-mail address" Keyboard="Email" />
-                    </inputLayout:SfTextInputLayout>
-
+                    <Label Text="{Binding ErrorName}" 
+                           TextColor="red" />
                 </StackLayout>
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
             </StackLayout>

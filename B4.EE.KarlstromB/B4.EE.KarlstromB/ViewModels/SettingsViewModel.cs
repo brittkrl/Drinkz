@@ -52,31 +52,12 @@ namespace B4.EE.KarlstromB.ViewModels
         }
 
 
-        private string errorLastName;
-        public string ErrorLastName
+        private string errorName;
+        public string ErrorName
         {
-            get { return errorLastName; }
-            set { errorLastName = value; RaisePropertyChanged(nameof(ErrorLastName)); }
+            get { return errorName; }
+            set { errorName = value; RaisePropertyChanged(nameof(ErrorName)); }
         }
-
-        private string email;
-        public string Email
-        {
-            get { return email; }
-            set
-            {
-                email = value;
-                RaisePropertyChanged(nameof(Email));
-            }
-        }
-
-        private string errorEmail;
-        public string ErrorEmail
-        {
-            get { return errorEmail; }
-            set { errorEmail = value; }
-        }
-
 
         #endregion
 
@@ -90,18 +71,17 @@ namespace B4.EE.KarlstromB.ViewModels
 
             FirstName = currentUser.FirstName;
             LastName = currentUser.LastName;
-            Email = currentUser.EmailAddress;
         }
 
         public ICommand SaveSettingsCommand => new Command(
-            async () => {
+            async () =>
+            {
                 var currentSettings = await settingsService.GetSettings();
                 await settingsService.SaveSettings(currentSettings);
 
                 var user = await usersService.GetUser(currentSettings.CurrentUserId);
                 user.FirstName = FirstName?.Trim();
                 user.LastName = LastName?.Trim();
-                user.EmailAddress = Email?.Trim();
 
                 if (Validate(user))
                 {
@@ -114,26 +94,12 @@ namespace B4.EE.KarlstromB.ViewModels
 
         private bool Validate(User user)
         {
-            ErrorFirstName = "";
-            ErrorLastName = "";
-            ErrorEmail = "";
+            ErrorName = "";
 
             var validationResult = userValidator.Validate(user);
-            //loop through error to identify properties
             foreach (var error in validationResult.Errors)
             {
-                if (error.PropertyName == nameof(user.FirstName))
-                {
-                    ErrorFirstName = error.ErrorMessage;
-                }
-                if (error.PropertyName == nameof(user.LastName))
-                {
-                    ErrorLastName = error.ErrorMessage;
-                }
-                if (error.PropertyName == nameof(user.EmailAddress))
-                {
-                    ErrorEmail = error.ErrorMessage;
-                }
+                ErrorName = error.ErrorMessage;
             }
             return validationResult.IsValid;
         }

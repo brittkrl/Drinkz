@@ -55,22 +55,19 @@
                 <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
                     <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
                     <StackLayout Padding="50,25,50,25">
+                        <Label Text="{Binding CocktailNameError}"
+                           IsVisible="{Binding CocktailNameErrorVisible}" 
+                           TextColor="red" />
                         <inputLayout:SfTextInputLayout Hint="Name"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
-                            <Entry Text="{Binding CocktailName}" Placeholder="Name your cocktail here"/>
+                            <Entry Text="{Binding CocktailName}" Keyboard="Text" Placeholder="Name your cocktail here"/>
                         </inputLayout:SfTextInputLayout>
-                        <Label Text="{Binding CocktailNameError}"
-                           IsVisible="{Binding CocktailNameErrorVisible}" 
-                           StyleClass="errormessage" />
                         <inputLayout:SfTextInputLayout Hint="Preparation"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
-                            <Editor Text="{Binding CocktailPreparation}" AutoSize="TextChanges" Placeholder="Describe the preparation here" />
+                            <Editor Text="{Binding CocktailPreparation}" Keyboard="Text" AutoSize="TextChanges" Placeholder="Describe the preparation here" />
                         </inputLayout:SfTextInputLayout>
-                        <Label Text="{Binding CocktailPreparationError}"
-                           IsVisible="{Binding CocktailPreparationErrorVisible}" 
-                           StyleClass="errormessage" />
                     </StackLayout>
                     <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
                     <StackLayout Orientation="Horizontal" Padding="10,25,10,25">

@@ -55,13 +55,13 @@
                     <inputLayout:SfTextInputLayout Hint="Custom ingredient name"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
-                        <Entry Text="{Binding IngredientName}" Placeholder="Enter a new ingredient" />
+                        <Entry Text="{Binding IngredientName}" Keyboard="Text" Placeholder="Enter a new ingredient" />
                     </inputLayout:SfTextInputLayout>
 
                     <inputLayout:SfTextInputLayout Hint="Optional amount"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
-                        <Entry Text="{Binding OptionalAmount}" Placeholder="e.g. 1 slice" />
+                        <Entry Text="{Binding OptionalAmount}" Keyboard="Text" Placeholder="e.g. 1 slice" />
                     </inputLayout:SfTextInputLayout>
                 </StackLayout>
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>

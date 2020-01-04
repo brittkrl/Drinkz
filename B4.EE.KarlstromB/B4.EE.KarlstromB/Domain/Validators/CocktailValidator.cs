@@ -15,10 +15,6 @@ namespace B4.EE.KarlstromB.Domain.Validators
                .WithMessage("Name cannot be empty")
                .Length(3, 30)
                .WithMessage("Length must be between 3 and 30");
-
-            RuleFor(cocktail => cocktail.Preparation)
-                .NotEmpty()
-                .WithMessage("Preparation cannot be empty");
         }
     }
 }

@@ -75,18 +75,6 @@ namespace B4.EE.KarlstromB.ViewModels
             set { cocktailPreparation = value; RaisePropertyChanged(nameof(CocktailPreparation)); }
         }
 
-        private string cocktailPreparationError;
-        public string CocktailPreparationError
-        {
-            get { return cocktailPreparationError; }
-            set { cocktailPreparationError = value; RaisePropertyChanged(nameof(CocktailPreparationError)); RaisePropertyChanged(nameof(CocktailPreparationErrorVisible)); }
-        }
-
-        public bool CocktailPreparationErrorVisible
-        {
-            get { return !string.IsNullOrWhiteSpace(CocktailPreparationError); }
-        }
-
         private int? rating;
         public int? Rating
         {
@@ -198,7 +186,7 @@ namespace B4.EE.KarlstromB.ViewModels
 
                 if (selectedImage == null)
                 {
-                    await CoreMethods.DisplayAlert("Error", "Unable to retrieve photo", "Continue");
+                    await CoreMethods.DisplayAlert("Something went wrong", "You might have cancelled the request to upload a photo. Please try again.", "Continue");
                     return;
                 }
 
@@ -222,7 +210,7 @@ namespace B4.EE.KarlstromB.ViewModels
 
                 if (file == null)
                 {
-                    await CoreMethods.DisplayAlert("Error", "Unable to take photo", "Continue");
+                    await CoreMethods.DisplayAlert("Something went wrong", "You might have cancelled the request to take a photo. Please try again.", "Continue");
                     return;
                 }
 
@@ -272,7 +260,6 @@ namespace B4.EE.KarlstromB.ViewModels
         private bool Validate(Cocktail cocktail)
         {
             CocktailNameError = "";
-            CocktailPreparationError = "";
 
             var validationResult = cocktailValidator.Validate(cocktail);
             foreach (var error in validationResult.Errors)
@@ -280,10 +267,6 @@ namespace B4.EE.KarlstromB.ViewModels
                 if (error.PropertyName == nameof(cocktail.Name))
                 {
                     CocktailNameError = error.ErrorMessage;
-                }
-                if (error.PropertyName == nameof(cocktail.Preparation))
-                {
-                    CocktailPreparationError = error.ErrorMessage;
                 }
             }
 

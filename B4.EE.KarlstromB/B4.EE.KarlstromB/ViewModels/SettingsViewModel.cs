@@ -6,6 +6,8 @@ using FluentValidation;
 using FreshMvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,13 +19,16 @@ namespace B4.EE.KarlstromB.ViewModels
     {
         private readonly IAppSettingsService settingsService;
         private readonly IUsersService usersService;
+        private readonly ICocktailsService cocktailsService;
         private IValidator userValidator;
 
         public SettingsViewModel(IAppSettingsService settingsService,
-            IUsersService usersService)
+            IUsersService usersService,
+            ICocktailsService cocktailsService)
         {
             this.settingsService = settingsService;
             this.usersService = usersService;
+            this.cocktailsService = cocktailsService;
             userValidator = new UserValidator();
         }
 
@@ -43,7 +48,6 @@ namespace B4.EE.KarlstromB.ViewModels
             set { errorFirstName = value; }
         }
 
-
         private string lastName;
         public string LastName
         {
@@ -51,12 +55,18 @@ namespace B4.EE.KarlstromB.ViewModels
             set { lastName = value; RaisePropertyChanged(nameof(LastName)); }
         }
 
-
         private string errorName;
         public string ErrorName
         {
             get { return errorName; }
             set { errorName = value; RaisePropertyChanged(nameof(ErrorName)); }
+        }
+
+        private ObservableCollection<Cocktail> cocktails;
+        public ObservableCollection<Cocktail> Cocktails
+        {
+            get { return cocktails; }
+            set { cocktails = value; RaisePropertyChanged(nameof(Cocktails)); }
         }
 
         #endregion
@@ -71,6 +81,8 @@ namespace B4.EE.KarlstromB.ViewModels
 
             FirstName = currentUser.FirstName;
             LastName = currentUser.LastName;
+
+            await RefreshCocktails();
         }
 
         public ICommand SaveSettingsCommand => new Command(
@@ -92,6 +104,13 @@ namespace B4.EE.KarlstromB.ViewModels
             }
         );
 
+        public ICommand OpenCocktailPageCommand => new Command<Cocktail>(
+            async (Cocktail cocktail) =>
+            {
+                await CoreMethods.PushPageModel<CocktailViewModel>(cocktail, false, true);
+            }
+        );
+
         private bool Validate(User user)
         {
             ErrorName = "";
@@ -102,6 +121,12 @@ namespace B4.EE.KarlstromB.ViewModels
                 ErrorName = error.ErrorMessage;
             }
             return validationResult.IsValid;
+        }
+
+        private async Task RefreshCocktails()
+        {
+            var cocktails = await cocktailsService.GetAllCocktails();
+            Cocktails = new ObservableCollection<Cocktail>(cocktails.Where(e => e.Rating > 8).OrderBy(e => e.Name));
         }
     }
 }

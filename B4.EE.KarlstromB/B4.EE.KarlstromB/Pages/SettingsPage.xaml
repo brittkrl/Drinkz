@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"             
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"        
+             xmlns:bhv="clr-namespace:B4.EE.KarlstromB.Behaviors" 
              mc:Ignorable="d"
              x:Class="B4.EE.KarlstromB.Pages.SettingsPage"
              Title="Change profile">
@@ -13,35 +14,57 @@
                      Command="{Binding SaveSettingsCommand}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{OnPlatform Android=#FFFFFF, UWP=#FFA4FD}">
-            <Image HeightRequest="200" Margin="30">
-                <Image.Source>
-                    <OnPlatform x:TypeArguments="ImageSource">
-                        <On Platform="Android">settings.png</On>
-                        <On Platform="UWP">Images/settings.png</On>
-                    </OnPlatform>
-                </Image.Source>
-            </Image>
+        <ScrollView>
+            <StackLayout BackgroundColor="{OnPlatform Android=#FFFFFF, UWP=#FFA4FD}">
+                <Image HeightRequest="200" Margin="30">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="ImageSource">
+                            <On Platform="Android">settings.png</On>
+                            <On Platform="UWP">Images/settings.png</On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
 
-            <StackLayout BackgroundColor="White">
-                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
-                <StackLayout  Padding="50,25,50,25">
-                    <inputLayout:SfTextInputLayout Hint="First name"
+                <StackLayout BackgroundColor="White">
+                    <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+                    <StackLayout  Padding="50,25,50,25">
+                        <inputLayout:SfTextInputLayout Hint="First name"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
-                        <Entry Text="{Binding FirstName}" Placeholder="First name" Keyboard="Text" />
-                    </inputLayout:SfTextInputLayout>
-                    
-                    <inputLayout:SfTextInputLayout Hint="Last name"
+                            <Entry Text="{Binding FirstName}" Placeholder="First name" Keyboard="Text" />
+                        </inputLayout:SfTextInputLayout>
+
+                        <inputLayout:SfTextInputLayout Hint="Last name"
                                                    FocusedColor="#E240E3"
                                                    UnfocusedColor="Silver">
-                        <Entry Text="{Binding LastName}" Placeholder="Last name" Keyboard="Text" />
-                    </inputLayout:SfTextInputLayout>
-                    <Label Text="{Binding ErrorName}" 
+                            <Entry Text="{Binding LastName}" Placeholder="Last name" Keyboard="Text" />
+                        </inputLayout:SfTextInputLayout>
+                        <Label Text="{Binding ErrorName}" 
                            TextColor="red" />
+                    </StackLayout>
+                    <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+
+                    <Label Text="My favourites" FontSize="Subtitle" Margin="20,10,0,0"/>
+                    <FlexLayout BindableLayout.ItemsSource="{Binding Cocktails}" 
+                            Wrap="Wrap"
+                            Direction="Row"
+                            JustifyContent="Start"
+                            AlignItems="Center"
+                            AlignContent="Center"
+                            Padding="8" Margin="10,0,0,0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Margin="10" BorderColor="#FD77FF" WidthRequest="120" HeightRequest="120" >
+                                    <StackLayout VerticalOptions="Center">
+                                        <Image WidthRequest="75" Source="{Binding ImageUrl}"/>
+                                        <Label Text="{Binding Name}" HorizontalOptions="Center"/>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
                 </StackLayout>
-                <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

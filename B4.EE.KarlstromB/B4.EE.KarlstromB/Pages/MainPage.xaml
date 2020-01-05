@@ -30,7 +30,7 @@
             </StackLayout>
             <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
                 <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
-                <StackLayout Orientation="Horizontal" Padding="0,25,0,25">
+                <StackLayout Orientation="Horizontal" Padding="0,25,0,25" VerticalOptions="CenterAndExpand">
                     <StackLayout HorizontalOptions="CenterAndExpand">
                         <ImageButton Command="{Binding OpenOverviewPageCommand}" HeightRequest="100" BackgroundColor="Transparent">
                             <ImageButton.Source>
@@ -41,6 +41,9 @@
                             </ImageButton.Source>
                         </ImageButton>
                         <Label Text="My drinks" TextColor="#E240E3" HorizontalOptions="Center"/>
+                    </StackLayout>
+                    <StackLayout VerticalOptions="Center">
+                        <Label Text="{Binding Path=NameUser, Converter={StaticResource WelcomeMessageToVisibleConv}}"/>
                     </StackLayout>
                     <StackLayout HorizontalOptions="CenterAndExpand">
                         <ImageButton Command="{Binding OpenSettingsPageCommand}" HeightRequest="100" BackgroundColor="Transparent">

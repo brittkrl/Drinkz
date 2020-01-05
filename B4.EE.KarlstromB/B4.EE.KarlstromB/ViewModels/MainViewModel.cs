@@ -16,7 +16,6 @@ namespace B4.EE.KarlstromB.ViewModels
         private readonly IUsersService usersService;
         private readonly IAppSettingsService settingsService;
 
-
         public MainViewModel(IUsersService usersService,
             IAppSettingsService settingsService)
         {
@@ -27,7 +26,14 @@ namespace B4.EE.KarlstromB.ViewModels
         {
             base.ViewIsAppearing(sender, e);
             await EnsureUserAndSettings();
+        }
 
+
+        private string nameUser;
+        public string NameUser
+        {
+            get { return nameUser; }
+            set { nameUser = value; RaisePropertyChanged(nameof(NameUser)); }
         }
 
         public ICommand OpenOverviewPageCommand => new Command(
@@ -52,10 +58,9 @@ namespace B4.EE.KarlstromB.ViewModels
                 //create new user
                 var newUser = new User
                 {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Guest",
-                    LastName = "",
-                    EmailAddress = ""
+                    Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    FirstName = "",
+                    LastName = ""
                 };
                 await usersService.CreateUser(newUser);
 
@@ -65,6 +70,14 @@ namespace B4.EE.KarlstromB.ViewModels
                     CurrentUserId = newUser.Id
                 };
                 await settingsService.SaveSettings(newSettings);
+            }
+            else
+            {
+                var currentUser = await usersService.GetUser(settings.CurrentUserId);
+                if (currentUser.FirstName != null)
+                {
+                    NameUser = currentUser.FirstName;
+                }
             }
         }
     }

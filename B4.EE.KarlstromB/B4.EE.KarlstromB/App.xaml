@@ -11,6 +11,7 @@
             <!-- Converters -->
             <conv:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConv" />
             <conv:StringAmountToOptionalAmountConverter x:Key="StringAmountToOptionalAmountConv"/>
+            <conv:WelcomeMessageToVisibleConverter x:Key="WelcomeMessageToVisibleConv"/>
 
             <!-- Common Colors -->
             <Color x:Key="ColorPrimary">#FBAFDF</Color>

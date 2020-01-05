@@ -69,59 +69,66 @@
                             <Editor Text="{Binding CocktailPreparation}" Keyboard="Text" AutoSize="TextChanges" Placeholder="Describe the preparation here" />
                         </inputLayout:SfTextInputLayout>
                     </StackLayout>
+
                     <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
-                    <StackLayout Orientation="Horizontal" Padding="10,25,10,25">
-                        <StackLayout HorizontalOptions="CenterAndExpand">
-                            <Label Text="Rating" FontSize="Medium"/>
-                            <numeric:SfNumericUpDown Value="{Binding Rating}" Minimum="1" Maximum="10" SpinButtonAlignment="Both" IsEditable="False" BackgroundColor="#F5F5F5"/>
+
+                    <StackLayout Padding="50,25,50,25">
+                        <Label Text="Rating" FontSize="Medium"/>
+                        <numeric:SfNumericUpDown Value="{Binding Rating}" Minimum="1" Maximum="10"  IsEditable="False" BackgroundColor="#F5F5F5" WidthRequest="250" HorizontalOptions="Start">
+                            <numeric:SfNumericUpDown.IncrementButtonSettings>
+                                <numeric:UpDownButtonSettings HighlightedBackgroundColor="#34B3D9"/>
+                            </numeric:SfNumericUpDown.IncrementButtonSettings>
+                            <numeric:SfNumericUpDown.DecrementButtonSettings>
+                                <numeric:UpDownButtonSettings HighlightedBackgroundColor="#34B3D9"/>
+                            </numeric:SfNumericUpDown.DecrementButtonSettings>
+                        </numeric:SfNumericUpDown>
+                        <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
+                            <Label Text="Ingredients" FontSize="Medium"/>
+                            <ImageButton Command="{Binding OpenIngredientPageCommand}" HeightRequest="25" BackgroundColor="Transparent">
+                                <ImageButton.Source>
+                                    <OnPlatform x:TypeArguments="ImageSource">
+                                        <On Platform="Android">newingredient.png</On>
+                                        <On Platform="UWP">Images/newingredient.png</On>
+                                    </OnPlatform>
+                                </ImageButton.Source>
+                            </ImageButton>
                         </StackLayout>
-                        <StackLayout HorizontalOptions="CenterAndExpand">
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="Ingredients" FontSize="Medium"/>
-                                <ImageButton Command="{Binding OpenIngredientPageCommand}" HeightRequest="25" BackgroundColor="Transparent">
-                                    <ImageButton.Source>
-                                        <OnPlatform x:TypeArguments="ImageSource">
-                                            <On Platform="Android">newingredient.png</On>
-                                            <On Platform="UWP">Images/newingredient.png</On>
-                                        </OnPlatform>
-                                    </ImageButton.Source>
-                                </ImageButton>
-                            </StackLayout>
-                            <Frame Padding="10" Margin="10" BorderColor="#34B3D9" HasShadow="True" HeightRequest="100">
-                                <ListView ItemsSource="{Binding Ingredients}"
+                        <Frame Padding="10" Margin="10" BorderColor="#34B3D9" HasShadow="True" HeightRequest="125">
+                            <ListView ItemsSource="{Binding Ingredients}"
                               HasUnevenRows="False" RowHeight="30">
-                                    <ListView.Behaviors>
-                                        <bhv:EventToCommandBehavior 
+                                <ListView.Behaviors>
+                                    <bhv:EventToCommandBehavior 
                                 EventName="ItemTapped"  
                                 Command="{Binding OpenIngredientPageCommand}"
                                 EventArgsConverter="{StaticResource ItemTappedEventArgsConv}" />
-                                    </ListView.Behaviors>
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <ViewCell.ContextActions>
-                                                    <MenuItem Command="{Binding BindingContext.OpenIngredientPageCommand, Source={x:Reference page}}" 
+                                </ListView.Behaviors>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <ViewCell.ContextActions>
+                                                <MenuItem Command="{Binding BindingContext.OpenIngredientPageCommand, Source={x:Reference page}}" 
                                                   CommandParameter="{Binding .}" 
                                                   Text="Edit" />
-                                                    <MenuItem Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference page}}"
+                                                <MenuItem Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference page}}"
                                                   CommandParameter="{Binding .}"
                                                   Text="Delete" IsDestructive="True" />
-                                                </ViewCell.ContextActions>
-                                                <StackLayout>
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <Label Text="{Binding Name, StringFormat='{0}:'}" />
-                                                        <Label Text="{Binding Path=Amount, Converter={StaticResource StringAmountToOptionalAmountConv}}"/>
-                                                        <Label Text="{Binding OptionalAmount}" />
-                                                    </StackLayout>
+                                            </ViewCell.ContextActions>
+                                            <StackLayout>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Name, StringFormat='{0}:'}" />
+                                                    <Label Text="{Binding Path=Amount, Converter={StaticResource StringAmountToOptionalAmountConv}}"/>
+                                                    <Label Text="{Binding OptionalAmount}" />
                                                 </StackLayout>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Frame>
-                        </StackLayout>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Frame>
                     </StackLayout>
+
                     <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
+
                 </StackLayout>
             </Grid>
         </ScrollView>

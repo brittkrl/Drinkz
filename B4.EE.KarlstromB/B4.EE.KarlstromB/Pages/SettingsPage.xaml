@@ -40,7 +40,17 @@
                             <Entry Text="{Binding LastName}" Placeholder="Last name" Keyboard="Text" />
                         </inputLayout:SfTextInputLayout>
                         <Label Text="{Binding ErrorName}" 
-                           TextColor="red" />
+                               IsVisible="{Binding ErrorNameVisible}"
+                               TextColor="red" />
+
+                        <inputLayout:SfTextInputLayout Hint="Age"
+                                                   FocusedColor="#E240E3"
+                                                   UnfocusedColor="Silver">
+                            <Entry Text="{Binding Age}" Placeholder="Age" Keyboard="Numeric" />
+                        </inputLayout:SfTextInputLayout>
+                        <Label Text="{Binding ErrorAge}" 
+                               IsVisible="{Binding ErrorAgeVisible}"
+                               TextColor="red" />
                     </StackLayout>
                     <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
 

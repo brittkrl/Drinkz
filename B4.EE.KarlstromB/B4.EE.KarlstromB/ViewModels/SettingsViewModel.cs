@@ -59,7 +59,37 @@ namespace B4.EE.KarlstromB.ViewModels
         public string ErrorName
         {
             get { return errorName; }
-            set { errorName = value; RaisePropertyChanged(nameof(ErrorName)); }
+            set { errorName = value; 
+                RaisePropertyChanged(nameof(ErrorName)); 
+                RaisePropertyChanged(nameof(ErrorNameVisible));
+            }
+        }
+
+        public bool ErrorNameVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(ErrorName); }
+        }
+
+        private int age;
+        public int Age
+        {
+            get { return age; }
+            set { age = value; RaisePropertyChanged(nameof(Age)); }
+        }
+
+        private string errorAge;
+        public string ErrorAge
+        {
+            get { return errorAge; }
+            set { errorAge = value; 
+                RaisePropertyChanged(nameof(ErrorAge));
+                RaisePropertyChanged(nameof(ErrorAgeVisible));
+            }
+        }
+
+        public bool ErrorAgeVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(ErrorAge); }
         }
 
         private ObservableCollection<Cocktail> cocktails;
@@ -81,6 +111,7 @@ namespace B4.EE.KarlstromB.ViewModels
 
             FirstName = currentUser.FirstName;
             LastName = currentUser.LastName;
+            Age = currentUser.Age;
 
             await RefreshCocktails();
         }
@@ -94,6 +125,7 @@ namespace B4.EE.KarlstromB.ViewModels
                 var user = await usersService.GetUser(currentSettings.CurrentUserId);
                 user.FirstName = FirstName?.Trim();
                 user.LastName = LastName?.Trim();
+                user.Age = Age;
 
                 if (Validate(user))
                 {
@@ -114,11 +146,19 @@ namespace B4.EE.KarlstromB.ViewModels
         private bool Validate(User user)
         {
             ErrorName = "";
+            ErrorAge = "";
 
             var validationResult = userValidator.Validate(user);
             foreach (var error in validationResult.Errors)
             {
-                ErrorName = error.ErrorMessage;
+                if (error.PropertyName == nameof(user.FirstName) || error.PropertyName == nameof(user.LastName))
+                {
+                    ErrorName = error.ErrorMessage;
+                }
+                if (error.PropertyName == nameof(user.Age))
+                {
+                    ErrorAge = error.ErrorMessage;
+                }
             }
             return validationResult.IsValid;
         }

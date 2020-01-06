@@ -17,6 +17,13 @@ namespace B4.EE.KarlstromB.Domain.Validators
             RuleFor(bucket => bucket.LastName)
                 .NotEmpty()
                 .WithMessage("Please enter a valid name");
+
+            RuleFor(bucket => bucket.Age)
+                .NotEmpty()
+                .WithMessage("Please enter a valid age")
+                .GreaterThanOrEqualTo(18)
+                .WithMessage("You must be at least 18 years old to use this app!");
+
         }
     }
 }

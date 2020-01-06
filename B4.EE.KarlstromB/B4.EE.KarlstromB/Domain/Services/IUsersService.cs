@@ -11,5 +11,7 @@ namespace B4.EE.KarlstromB.Domain.Services
         Task<User> GetUser(Guid id);
         Task<User> UpdateUser(User user);
         Task<User> CreateUser(User user);
+        bool IsUnderage(User user);
+
     }
 }

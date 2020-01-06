@@ -68,5 +68,10 @@ namespace B4.EE.KarlstromB.Domain.Services.Local
             string usersJson = JsonConvert.SerializeObject(users, Formatting.Indented, _serializerSettings);
             File.WriteAllText(_filePath, usersJson);
         }
+
+        public bool IsUnderage(User user)
+        {
+            return user?.Age < 18;
+        }
     }
 }

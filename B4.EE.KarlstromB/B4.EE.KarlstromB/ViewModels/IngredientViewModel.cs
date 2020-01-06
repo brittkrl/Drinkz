@@ -1,5 +1,7 @@
 ﻿using B4.EE.KarlstromB.Domain.Models;
 using B4.EE.KarlstromB.Domain.Services;
+using B4.EE.KarlstromB.Domain.Validators;
+using FluentValidation;
 using FreshMvvm;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,11 @@ namespace B4.EE.KarlstromB.ViewModels
     public class IngredientViewModel : FreshBasePageModel
     {
         private Ingredient currentIngredient;
+        private IValidator ingredientValidator;
 
         public IngredientViewModel()
         {
+            ingredientValidator = new IngredientValidator();
         }
 
         #region Properties
@@ -58,6 +62,57 @@ namespace B4.EE.KarlstromB.ViewModels
         {
             get { return selectedIngredient; }
             set { if (selectedIngredient != value) selectedIngredient = value; RaisePropertyChanged(nameof(SelectedIngredient)); }
+        }
+
+        private string ingredientNameError;
+        public string IngredientNameError
+        {
+            get { return ingredientNameError; }
+            set
+            {
+                ingredientNameError = value;
+                RaisePropertyChanged(nameof(IngredientNameError));
+                RaisePropertyChanged(nameof(IngredientNameErrorVisible));
+            }
+        }
+
+        public bool IngredientNameErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(IngredientNameError); }
+        }
+
+        private string optionalAmountError;
+        public string OptionalAmountError
+        {
+            get { return optionalAmountError; }
+            set
+            {
+                optionalAmountError = value;
+                RaisePropertyChanged(nameof(OptionalAmountError));
+                RaisePropertyChanged(nameof(OptionalAmountErrorVisible));
+            }
+        }
+
+        public bool OptionalAmountErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(OptionalAmountError); }
+        }
+
+        private string amountError;
+        public string AmountError
+        {
+            get { return amountError; }
+            set
+            {
+                amountError = value;
+                RaisePropertyChanged(nameof(AmountError));
+                RaisePropertyChanged(nameof(AmountErrorVisible));
+            }
+        }
+
+        public bool AmountErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(AmountError); }
         }
 
         #endregion
@@ -105,16 +160,19 @@ namespace B4.EE.KarlstromB.ViewModels
                 try
                 {
                     SaveIngredient();
-                    if (currentIngredient.Id == Guid.Empty)
+                    if (Validate(currentIngredient))
                     {
-                        currentIngredient.Id = Guid.NewGuid();
-                        currentIngredient.Cocktail.Ingredients.Add(currentIngredient);
+                        if (currentIngredient.Id == Guid.Empty)
+                        {
+                            currentIngredient.Id = Guid.NewGuid();
+                            currentIngredient.Cocktail.Ingredients.Add(currentIngredient);
+                        }
+                        else
+                        {
+                            currentIngredient.Cocktail.Ingredients.Add(currentIngredient);
+                        }
+                        await CoreMethods.PopPageModel(currentIngredient, false, true);
                     }
-                    else
-                    {
-                        currentIngredient.Cocktail.Ingredients.Add(currentIngredient);
-                    }
-                    await CoreMethods.PopPageModel(currentIngredient, false, true);
                 }
                 catch (Exception ex)
                 {
@@ -122,5 +180,31 @@ namespace B4.EE.KarlstromB.ViewModels
                     throw;
                 }
             });
+
+        private bool Validate(Ingredient ingredient)
+        {
+            IngredientNameError = "";
+            AmountError = "";
+            OptionalAmountError = "";
+
+            var validationResult = ingredientValidator.Validate(ingredient);
+            foreach (var error in validationResult.Errors)
+            {
+                if (error.PropertyName == nameof(ingredient.Name))
+                {
+                    IngredientNameError = error.ErrorMessage;
+                }
+                if (error.PropertyName == nameof(ingredient.Amount))
+                {
+                    AmountError = error.ErrorMessage;
+                }
+                if (error.PropertyName == nameof(ingredient.OptionalAmount))
+                {
+                    OptionalAmountError = error.ErrorMessage;
+                }
+            }
+
+            return validationResult.IsValid;
+        }
     }
 }

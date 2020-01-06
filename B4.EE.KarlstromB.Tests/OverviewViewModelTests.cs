@@ -44,7 +44,7 @@ namespace B4.EE.KarlstromB.Tests
         }
 
         [Fact]
-        public void OpenCocktailPageCommand_Opens_CocktailPage()
+        public void OpenCocktailPageCommand_Opens_CocktailPage_InEditMode_WhenCocktailIsNotNull()
         {
             //arrange
             var cocktail = new Cocktail { Id = Guid.Parse("00000000-1111-0000-0000-000000000001"), Name = "Moscow Mule" };
@@ -55,6 +55,55 @@ namespace B4.EE.KarlstromB.Tests
 
             //assert
             coreMethodsMock.Verify(e => e.PushPageModel<CocktailViewModel>(cocktail, It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
+        }
+
+        [Fact]
+        public void OpenCocktailPageCommand_Opens_CocktailPage_WhenCocktailIsNull()
+        {
+            //arrange
+            var cocktail = new Cocktail { Id = Guid.Empty, Name = null };
+            var vm = GetOverviewViewModel(null);
+
+            //act
+            vm.OpenCocktailPageCommand.Execute(cocktail);
+
+            //assert
+            coreMethodsMock.Verify(e => e.PushPageModel<CocktailViewModel>(cocktail, It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
+        }
+
+        [Fact]
+        public void DeleteCocktailCommand_GetsCancelled_ByUser_WithAlert()
+        {
+            //arrange
+            var cocktail1 = new Cocktail {
+                Id = Guid.Parse("00000000-1111-0000-0000-000000000001"),
+                Name = "Cosmopolitan",
+                Ingredients = null
+            };
+            var cocktail2 = new Cocktail
+            {
+                Id = Guid.Parse("00000000-1111-0000-0000-000000000002"),
+                Name = "Manhattan",
+                Ingredients = null
+            };
+
+            var cocktails = new List<Cocktail>
+            {
+                cocktail1,
+                cocktail2
+            };
+
+            coreMethodsMock.Setup(c => c.DisplayAlert(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(false));
+
+            var vm = GetOverviewViewModel(cocktails);
+
+            //act
+            vm.DeleteCocktailCommand.Execute(cocktail1);
+
+            //assert
+            cocktailsServiceMock.Verify(e => e.DeleteCocktail(Guid.Parse("00000000-1111-0000-0000-000000000001")), Times.Never());
+            Assert.Contains(cocktail1, vm.Cocktails);
         }
     }
 }

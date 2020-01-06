@@ -166,7 +166,7 @@ namespace B4.EE.KarlstromB.ViewModels
         private async Task RefreshCocktails()
         {
             var cocktails = await cocktailsService.GetAllCocktails();
-            Cocktails = new ObservableCollection<Cocktail>(cocktails.Where(e => e.Rating > 8).OrderBy(e => e.Name));
+            Cocktails = new ObservableCollection<Cocktail>(cocktails.Where(e => e.Rating >= 8).OrderBy(e => e.Name));
         }
     }
 }

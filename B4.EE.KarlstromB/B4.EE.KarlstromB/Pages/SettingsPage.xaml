@@ -64,7 +64,7 @@
                             Padding="8" Margin="10,0,0,0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Frame Margin="10" BorderColor="#FD77FF" WidthRequest="120" HeightRequest="120" >
+                                <Frame Margin="10" BorderColor="#FD77FF" WidthRequest="120" MinimumHeightRequest="120" >
                                     <StackLayout VerticalOptions="Center">
                                         <Image WidthRequest="75" Source="{Binding ImageUrl}"/>
                                         <Label Text="{Binding Name}" HorizontalOptions="Center"/>

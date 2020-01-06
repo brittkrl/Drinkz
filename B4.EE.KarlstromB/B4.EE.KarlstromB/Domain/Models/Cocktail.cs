@@ -14,5 +14,6 @@ namespace B4.EE.KarlstromB.Domain.Models
         public int? Rating { get; set; }
         public ObservableCollection<Ingredient> Ingredients { get; set; } = new ObservableCollection<Ingredient>();
         public Guid UserId { get; set; }
+        public bool HasIce { get; set; }
     }
 }

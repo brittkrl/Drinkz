@@ -116,6 +116,14 @@ namespace B4.EE.KarlstromB.ViewModels
             set { selectedImage = value; RaisePropertyChanged(nameof(SelectedImage)); }
         }
 
+
+        private bool hasIce;
+        public bool HasIce
+        {
+            get { return hasIce; }
+            set { hasIce = value; RaisePropertyChanged(nameof(HasIce)); }
+        }
+
         #endregion
 
         public async override void Init(object initData)
@@ -266,6 +274,7 @@ namespace B4.EE.KarlstromB.ViewModels
                 currentCocktail.UserId = settings.CurrentUserId;
                 currentCocktail.Ingredients = new ObservableCollection<Ingredient>();
                 currentCocktail.ImageUrl = "noimage.png";
+                currentCocktail.HasIce = false;
             }
             LoadCocktail();
         }
@@ -277,6 +286,7 @@ namespace B4.EE.KarlstromB.ViewModels
             Rating = currentCocktail.Rating;
             ImageUrl = currentCocktail.ImageUrl;
             Ingredients = new ObservableCollection<Ingredient>(currentCocktail.Ingredients.OrderBy(e => e.Name));
+            HasIce = currentCocktail.HasIce;
         }
 
         private void SaveCocktail()
@@ -286,6 +296,7 @@ namespace B4.EE.KarlstromB.ViewModels
             currentCocktail.Rating = Rating;
             currentCocktail.UserId = settings.CurrentUserId;
             currentCocktail.ImageUrl = ImageUrl;
+            currentCocktail.HasIce = HasIce;
         }
 
         private bool Validate(Cocktail cocktail)

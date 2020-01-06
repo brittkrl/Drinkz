@@ -190,11 +190,6 @@ namespace B4.EE.KarlstromB.Domain.Models
             BasicIngredients.Add(new Ingredient
             {
                 Id = Guid.NewGuid(),
-                Name = "Ice"
-            });
-            BasicIngredients.Add(new Ingredient
-            {
-                Id = Guid.NewGuid(),
                 Name = "Lime"
             });
             BasicIngredients.Add(new Ingredient

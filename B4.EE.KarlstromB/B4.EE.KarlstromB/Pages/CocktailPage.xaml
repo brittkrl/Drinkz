@@ -125,8 +125,11 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                         </Frame>
+                        <StackLayout Orientation="Horizontal" Margin="0,15,0,0">
+                            <Label Text="Ice" FontSize="Medium"/>
+                            <Switch IsToggled="{Binding HasIce}"/>
+                        </StackLayout>
                     </StackLayout>
-
                     <BoxView BackgroundColor="{OnPlatform Android=#34B3D9, UWP=#FD77FF}" HeightRequest="10"/>
 
                 </StackLayout>

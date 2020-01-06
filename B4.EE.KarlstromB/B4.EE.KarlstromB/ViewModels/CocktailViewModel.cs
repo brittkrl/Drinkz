@@ -8,6 +8,7 @@ using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace B4.EE.KarlstromB.ViewModels
     {
         private readonly ICocktailsService cocktailsService;
         private readonly IAppSettingsService settingsService;
+        private readonly IPhotoPickerService photoPickerService;
 
         private IValidator cocktailValidator;
         private AppSettings settings;
@@ -28,10 +30,12 @@ namespace B4.EE.KarlstromB.ViewModels
 
         public CocktailViewModel(
             ICocktailsService cocktailsService,
-            IAppSettingsService settingsService)
+            IAppSettingsService settingsService,
+            IPhotoPickerService photoPickerService)
         {
             this.cocktailsService = cocktailsService;
             this.settingsService = settingsService;
+            this.photoPickerService = photoPickerService;
             cocktailValidator = new CocktailValidator();
         }
 
@@ -89,6 +93,12 @@ namespace B4.EE.KarlstromB.ViewModels
             set { ingredients = value; RaisePropertyChanged(nameof(Ingredients)); }
         }
 
+        private ImageSource uploadedImage;
+        public ImageSource UploadedImage
+        {
+            get { return uploadedImage; }
+            set { uploadedImage = value; RaisePropertyChanged(nameof(UploadedImage)); }
+        }
 
         private string imageUrl;
         public string ImageUrl
@@ -124,6 +134,8 @@ namespace B4.EE.KarlstromB.ViewModels
                 LoadCocktail();
             }
         }
+
+        #region Commands
 
         public ICommand SaveCocktailCommand => new Command(
             async () =>
@@ -167,6 +179,21 @@ namespace B4.EE.KarlstromB.ViewModels
                 currentCocktail.Ingredients.Remove(ingredient);
                 LoadCocktail();
             });
+
+        //public ICommand UploadPhotoCommand => new Command(
+        //    async () =>
+        //    {
+        //        Stream stream = await photoPickerService.GetImageStreamAsync();
+        //        if (stream != null)
+        //        {
+        //            UploadedImage = ImageSource.FromStream(() => stream);
+        //        }
+        //        else
+        //        {
+        //            await CoreMethods.DisplayAlert("Something went wrong", "You might have cancelled the request to upload a photo. Please try again.", "Continue");
+        //            return;
+        //        }
+        //    });
 
         public ICommand UploadPhotoCommand => new Command(
             async () =>
@@ -216,6 +243,10 @@ namespace B4.EE.KarlstromB.ViewModels
 
                 ImageUrl = file.Path;
             });
+
+        #endregion
+
+        #region Methods
 
         private async Task RefreshCocktail()
         {
@@ -272,5 +303,7 @@ namespace B4.EE.KarlstromB.ViewModels
 
             return validationResult.IsValid;
         }
+
+        #endregion
     }
 }

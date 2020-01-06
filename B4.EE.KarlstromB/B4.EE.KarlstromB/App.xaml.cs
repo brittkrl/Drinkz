@@ -14,12 +14,18 @@ namespace B4.EE.KarlstromB
         {
             InitializeComponent();
 
+            ConfigureFreshIoc();
+
+            MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
+        }
+
+        private void ConfigureFreshIoc()
+        {
             FreshIOC.Container.Register<IAppSettingsService>(new JsonAppSettingsService());
             FreshIOC.Container.Register<IUsersService>(new JsonUsersService());
             FreshIOC.Container.Register<ICocktailsService>(new JsonCocktailsService());
             FreshIOC.Container.Register<ISeederService, DataSeederService>();
-
-            MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
+            FreshIOC.Container.Register(DependencyService.Get<IPhotoPickerService>());
         }
 
         protected override void OnStart()

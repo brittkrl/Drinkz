@@ -19,9 +19,8 @@ namespace B4.EE.KarlstromB.ViewModels
 {
     public class CocktailViewModel : FreshBasePageModel
     {
-        private readonly ICocktailsService cocktailsService;
-        private readonly IAppSettingsService settingsService;
-        private readonly IPhotoPickerService photoPickerService;
+        private readonly ICocktailsService _cocktailsService;
+        private readonly IAppSettingsService _settingsService;
 
         private IValidator cocktailValidator;
         private AppSettings settings;
@@ -30,12 +29,10 @@ namespace B4.EE.KarlstromB.ViewModels
 
         public CocktailViewModel(
             ICocktailsService cocktailsService,
-            IAppSettingsService settingsService,
-            IPhotoPickerService photoPickerService)
+            IAppSettingsService settingsService)
         {
-            this.cocktailsService = cocktailsService;
-            this.settingsService = settingsService;
-            this.photoPickerService = photoPickerService;
+            _cocktailsService = cocktailsService;
+            _settingsService = settingsService;
             cocktailValidator = new CocktailValidator();
         }
 
@@ -93,13 +90,6 @@ namespace B4.EE.KarlstromB.ViewModels
             set { ingredients = value; RaisePropertyChanged(nameof(Ingredients)); }
         }
 
-        private ImageSource uploadedImage;
-        public ImageSource UploadedImage
-        {
-            get { return uploadedImage; }
-            set { uploadedImage = value; RaisePropertyChanged(nameof(UploadedImage)); }
-        }
-
         private string imageUrl;
         public string ImageUrl
         {
@@ -116,7 +106,6 @@ namespace B4.EE.KarlstromB.ViewModels
             set { selectedImage = value; RaisePropertyChanged(nameof(SelectedImage)); }
         }
 
-
         private bool hasIce;
         public bool HasIce
         {
@@ -130,7 +119,7 @@ namespace B4.EE.KarlstromB.ViewModels
         {
             base.Init(initData);
             currentCocktail = initData as Cocktail;
-            settings = await settingsService.GetSettings();
+            settings = await _settingsService.GetSettings();
             await RefreshCocktail();
         }
 
@@ -153,14 +142,12 @@ namespace B4.EE.KarlstromB.ViewModels
                 {
                     if (isNew)
                     {
-                        await cocktailsService.AddCocktail(currentCocktail);
+                        await _cocktailsService.AddCocktail(currentCocktail);
                     }
                     else
                     {
-                        await cocktailsService.UpdateCocktail(currentCocktail);
+                        await _cocktailsService.UpdateCocktail(currentCocktail);
                     }
-
-                    MessagingCenter.Send(this, "Cocktail saved", currentCocktail);
 
                     await CoreMethods.PopPageModel(false, true);
                 }
@@ -187,21 +174,6 @@ namespace B4.EE.KarlstromB.ViewModels
                 currentCocktail.Ingredients.Remove(ingredient);
                 LoadCocktail();
             });
-
-        //public ICommand UploadPhotoCommand => new Command(
-        //    async () =>
-        //    {
-        //        Stream stream = await photoPickerService.GetImageStreamAsync();
-        //        if (stream != null)
-        //        {
-        //            UploadedImage = ImageSource.FromStream(() => stream);
-        //        }
-        //        else
-        //        {
-        //            await CoreMethods.DisplayAlert("Something went wrong", "You might have cancelled the request to upload a photo. Please try again.", "Continue");
-        //            return;
-        //        }
-        //    });
 
         public ICommand UploadPhotoCommand => new Command(
             async () =>
@@ -263,7 +235,7 @@ namespace B4.EE.KarlstromB.ViewModels
                 isNew = false;
                 PageTitle = "Edit cocktail";
                 
-                currentCocktail = await cocktailsService.GetCocktail(currentCocktail.Id);
+                currentCocktail = await _cocktailsService.GetCocktail(currentCocktail.Id);
             }
             else
             {
@@ -311,7 +283,6 @@ namespace B4.EE.KarlstromB.ViewModels
                     CocktailNameError = error.ErrorMessage;
                 }
             }
-
             return validationResult.IsValid;
         }
 
